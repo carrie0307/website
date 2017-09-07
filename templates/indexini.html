@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="{{static_url("js/jquery-3.2.1.min.js")}}"></script>
+    <script src="{{static_url("js/javascript.js")}}"></script>
+    <title>Learning Python</title>
+</head>
+<body>
+    <h2>Record</h2>
+    <p>用户名为：{{user}}登录</p>
+    <form method="POST">
+        <p><span>Name:</span><input type="text" id="name"/></p>
+        <p><span>Sex:</span><input type="password" id="sex" /></p>
+        <p><span>Job:</span><input type="text" id="job"/></p>
+        <p><input type="BUTTON" value="LOGIN" id="login"/></p>
+    </form>
+    <a href="/paint.html">paint</a>
+</body>
