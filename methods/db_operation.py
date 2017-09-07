@@ -20,11 +20,12 @@ def change_frequency():
     res = collection.find()
     return_data = {}
     # return_data['total'] = res.count()
-    return_data['total'] = 20
+    return_data['total'] = 10
     return_data['rows'] = []
     i = 0
     for item in res:
-        if i > 30:
+        print item['visit_times']
+        if i > 9:
             break
         i += 1
         temp = {}
@@ -44,14 +45,19 @@ def change_frequency():
 
 
 def live_period(domain):
+    '''
+    这里有些问题，需要改
+    '''
     global collection
     return_data = {}
     return_data['rows'] = []
     ip_period = {}
+    ip_list = []
     # res = collection.find({'domain':domain})
     item = collection.find_one({'domain':domain})
     last_ip = []
     for index, each_visit_res in enumerate(item['ip_geo']): # 遍历每一次访问
+        ip_list.extend(each_visit_res['ips'])
         if index == 0:
             for ip in each_visit_res['ips']:
                 ip_period[ip] = {'ip': ip,'begin': item['record_time'], 'end': each_visit_res['insert_time']}
@@ -64,17 +70,24 @@ def live_period(domain):
                 else: # 第一次出现的ip，将插入时间作为计时起点，计时结尾记为当前统计时间
                     ip_period[ip] = {'ip': ip, 'begin': each_visit_res['insert_time'], 'end':''}
                 temp.append(ip)
+            for ip in last_ip:
+                if ip not in each_visit_res['ips']: #上次记录有，但这次不存在的ip
+                    ip_period[ip]['end'] = each_visit_res['insert_time'] #结束时间记为第一次探测到它不存在的情况
             last_ip = temp # 将这一次访问所得ip置于last_ip列表
             temp = []
         # if index > 5:
             # break
+    # print ip_period
+    ip_list = list(set(ip_list))
+    print ip_list
+    print len(ip_list)
     return_data['total'] = len(ip_period.keys())
     for ip in ip_period.keys(): # 计算每个ip的生命时长
-        if ip_period[ip]['end'] =='': # 说明该ip只在一次访问中存在
+        if ip_period[ip]['end'] =='': # 说明该ip刚出现过一次
             ip_period[ip]['end'] = str(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
             # ip_period[ip]['period'] = 1.99 # 则置为访问间隔1.99, 表示不满2小时
             # return_data['rows'].append(ip_period[ip])
-            # continue
+            continue
         period = ((datetime.datetime.strptime(ip_period[ip]['end'], "%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(ip_period[ip]['begin'], "%Y-%m-%d %H:%M:%S")).seconds) / 3600 # 以小时为单位
         ip_period[ip]['period'] = round(period, 2) # 保留两位小数
         return_data['rows'].append(ip_period[ip])
@@ -84,7 +97,7 @@ def live_period(domain):
 
 
 if __name__ == '__main__':
-    # print change_frequency()
+    print change_frequency()
     # www-4s.cc
     # 7777744444.com
-    print live_period('www-4s.cc')
+    # return_data = live_period('www-4s.cc')

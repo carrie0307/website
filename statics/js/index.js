@@ -49,7 +49,7 @@ function ajaxRequest(){
             //data是所请求的 URL的网页内容
             //var length=data1['total'];
             //document.write(length);
-
+            alert(111);
             alert(data1["total"]);
             return data1["rows"];
         },
@@ -75,9 +75,10 @@ function initTable(tableId){
         url: '/off',
         smartDisplay:false,
         //data: ajaxRequest
+        height: 500,
         pagination : true,//开启分页
         sidePagination : "server",//使用服务器端分页
-        pageSize : 5,//每页大小
+        pageSize : 10,//每页大小
         pageList : [20, 40, 60, 80],//可以选择每页大小
         sortable: true, //是否启用排序
         sortOrder: "change_times",
