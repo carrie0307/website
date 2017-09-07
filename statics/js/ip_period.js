@@ -1,36 +1,3 @@
-/*
-$(document).ready(function(){
-    alert(111);
-
-
-
-
-       $.ajax({
-            type:"get",
-            url:"/off",
-            cache:false,
-            success:function(data1){
-                //data是所请求的 URL的网页内容
-                var length=data1['length'];
-                document.write(length);
-                alert(length);
-
-                var data=data1['data'];
-                for (value in data){
-			        document.write(value);
-                    document.write(data[value]['change_times'],data[value]['visit_times'],data[value]['frequency'])
-	            }
-
-            },
-            error:function(){
-                alert("error!");
-            },
-        });
-
-});
-
-*/
-
 $(document).ready(function(){
     initTable("#dataTable");
 });
@@ -72,7 +39,7 @@ function initTable(tableId){
         classes : "table table-bordered table-hover table-striped",//加载的样式
         //ajax : "ajaxRequest",//自定义ajax
         method: 'get',
-        url: '/off',
+        url: '/ip_off',
         smartDisplay:false,
         //data: ajaxRequest
         pagination : true,//开启分页
@@ -80,25 +47,25 @@ function initTable(tableId){
         pageSize : 5,//每页大小
         pageList : [20, 40, 60, 80],//可以选择每页大小
         sortable: true, //是否启用排序
-        sortOrder: "change_times",
+        sortOrder: "period",
         search : true,//不开启搜索文本框
         queryParams : "postQueryParams",//自定义参数
         columns: [
                     {
-                        field: 'domain',
-                        title:'域名'
+                        field: 'ip',
+                        title:'IP'
                     },
                     {
-                        field: 'visit_times',
-                        title: '访问次数'
+                        field: 'begin',
+                        title: '计时起点'
                     },
                     {
-                        field: 'change_times',
-                        title: 'IP变化次数',
+                        field: 'end',
+                        title: '计时终点',
                     },
                     {
-                        field:'frequency',
-                        title: '变化频率'
+                        field:'period',
+                        title: '时长'
                     }
                 ]
     });

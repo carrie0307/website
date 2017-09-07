@@ -11,10 +11,11 @@ sys.setdefaultencoding("utf-8")
 from handlers.index import IndexHandler    #假设已经有了
 from handlers.off import OffHandler
 from handlers.ip import IP_PeriodHandler
+from handlers.ip_off import ip_OffHandler
 
 url = [
     (r'/', IndexHandler),
     (r'/off', OffHandler),
-    r'/IP_period', OffHandler)
-
+    (r'/IP_period', IP_PeriodHandler),
+    (r'/ip_off', ip_OffHandler)
 ]
