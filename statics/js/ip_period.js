@@ -39,7 +39,7 @@ function initTable(tableId){
         classes : "table table-bordered table-hover table-striped",//加载的样式
         //ajax : "ajaxRequest",//自定义ajax
         method: 'get',
-        url: '/ip_off',
+        url: '/iplive_off',
         smartDisplay:false,
         //data: ajaxRequest
         pagination : true,//开启分页

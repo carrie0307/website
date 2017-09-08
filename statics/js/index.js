@@ -49,7 +49,7 @@ function ajaxRequest(){
             //data是所请求的 URL的网页内容
             //var length=data1['total'];
             //document.write(length);
-            alert(111);
+            
             alert(data1["total"]);
             return data1["rows"];
         },

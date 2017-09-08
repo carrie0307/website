@@ -32,7 +32,8 @@
 
     <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
 
-    <script src="{{static_url("js/echarts.js")}}"></script>
+
+
 
 
 
@@ -315,23 +316,12 @@
                     <aside class="right-side">
 
                 <!-- Main content -->
-                <div id="main" style="width: 1000px;height:400px;"></div>
 
-                <table id="dataTable">
-                <thead>
-            <!--
-                <tr>
-                    <th data-field="fullname" data-sortable="true">域名</th>
-                    <th data-field="shortname" data-sortable="true">IP变化次数</th>
-                    <th data-field="address" data-sortable="true">访问次数</th>
-                    <th data-field="linkman" data-sortable="true">变化</th>
-                </tr>
-            -->
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <ul id ="example"></ ul>
+                <div id="ip-scatter" style="width: 1200px;height:400px;"></div>
+
+
+
+            <ul id ="example"></ul>
             </div >
 
 
@@ -385,10 +375,9 @@
 
        <!-- jQuery 2.0.2 -->
 
-       <script src="{{static_url("js/index.js")}}"></script>
        <script src="{{static_url("js/bootstrap-table.js")}}"></script>
-
-       <script src="{{static_url("js/index-chart.js")}}"></script>
+       <script src="{{static_url("js/echarts.js")}}"></script>
+       <script src="{{static_url("js/ipscatter.js")}}"></script>
 
        <!-- MyJS 2.0.2 -->
 

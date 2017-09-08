@@ -9,7 +9,7 @@ import time
 client = MongoClient()
 client = MongoClient('172.29.152.152', 27017)
 db = client.eds_last
-collection = db.domain_ip_geo
+collection = db.domain_ip_geo_copy
 
 
 # 计算所有domain的ip更换频率
@@ -42,6 +42,22 @@ def change_frequency():
         return_data['rows'].append({'domain':str(item['domain']), 'change_times' : str(change_times),  'visit_times': str(visit_times), 'frequency': str(frequency)})
     # return_data['rows'] = sorted(return_data['rows'], key=operator.itemgetter('change_times'), reverse = True)
     return return_data
+
+
+def ip_change(domain):
+    global collection
+    return_data = {}
+    return_data['rows'] = {}
+    item = collection.find_one({'domain':domain})
+    i = 0
+    for each_visit_res in item['ip_geo']:
+        # if i > 5:
+            # break
+        # i += 1
+        return_data['rows'][each_visit_res['insert_time']] = each_visit_res['ips']
+    return_data['total'] = len(item['ip_geo'])
+    return return_data
+
 
 
 def live_period(domain):
@@ -78,9 +94,6 @@ def live_period(domain):
         # if index > 5:
             # break
     # print ip_period
-    ip_list = list(set(ip_list))
-    print ip_list
-    print len(ip_list)
     return_data['total'] = len(ip_period.keys())
     for ip in ip_period.keys(): # 计算每个ip的生命时长
         if ip_period[ip]['end'] =='': # 说明该ip刚出现过一次
@@ -97,7 +110,8 @@ def live_period(domain):
 
 
 if __name__ == '__main__':
-    print change_frequency()
+    # print change_frequency()
+    print ip_change('www-4s.cc')
     # www-4s.cc
     # 7777744444.com
     # return_data = live_period('www-4s.cc')

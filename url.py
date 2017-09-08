@@ -10,12 +10,19 @@ sys.setdefaultencoding("utf-8")
 
 from handlers.index import IndexHandler    #假设已经有了
 from handlers.off import OffHandler
-from handlers.ip import IP_PeriodHandler
-from handlers.ip_off import ip_OffHandler
+
+from handlers.iplive import IPlive_PeriodHandler # 生命周期统计
+from handlers.iplive_off import iplive_OffHandler
+
+from handlers.ip_scatter import ipScatterHandler # 具体变动的散点图
+from handlers.ip_scatter_off import ipScatter_OffHandler # 具体每个域名的ip变化情况
+
 
 url = [
     (r'/', IndexHandler),
     (r'/off', OffHandler),
-    (r'/IP_period', IP_PeriodHandler),
-    (r'/ip_off', ip_OffHandler)
+    (r'/IPlive_period', IPlive_PeriodHandler),
+    (r'/iplive_off', iplive_OffHandler),
+    ('/ip_scatter', ipScatterHandler), # 展示每个域名ip具体变化散点图的页面
+    (r'/ip_scatter_off',ipScatter_OffHandler)
 ]

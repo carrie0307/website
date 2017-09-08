@@ -2,7 +2,7 @@
 import tornado.web
 from methods.db_operation import live_period
 
-class ip_OffHandler(tornado.web.RequestHandler):
+class iplive_OffHandler(tornado.web.RequestHandler):
     def get(self):
         ip_period = live_period('www-4s.cc')
         print ip_period
