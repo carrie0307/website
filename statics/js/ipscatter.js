@@ -109,8 +109,8 @@ function set_option(data1)
 }
 
 
-
-$.ajax({ //用get方法请求加载默认域名的数据
+//用get方法请求加载默认域名的数据
+$.ajax({
     type:"get",
     url:"/ip_scatter_off",
     cache:false,
