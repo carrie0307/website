@@ -4,6 +4,8 @@ from methods.db_operation import ip_change
 
 class ipScatterHandler(tornado.web.RequestHandler):
     def get(self):
+        ip_change_res = ip_change('www-4s.cc')
+        # self.write(ip_change_res)
         self.render('ip_scatter.html')
 
     def post(self):

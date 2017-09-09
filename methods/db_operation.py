@@ -44,19 +44,22 @@ def change_frequency():
     return return_data
 
 
+#  ip连续性统计，ip散点图
 def ip_change(domain):
     global collection
     return_data = {}
     return_data['rows'] = {}
     item = collection.find_one({'domain':domain})
-    i = 0
     for each_visit_res in item['ip_geo']:
-        # if i > 5:
-            # break
-        # i += 1
         return_data['rows'][each_visit_res['insert_time']] = each_visit_res['ips']
     return_data['total'] = len(item['ip_geo'])
     return return_data
+
+
+# ip变动具体统计
+def ip_change_situation(domain):
+    global collection
+    
 
 
 
@@ -69,7 +72,6 @@ def live_period(domain):
     return_data['rows'] = []
     ip_period = {}
     ip_list = []
-    # res = collection.find({'domain':domain})
     item = collection.find_one({'domain':domain})
     last_ip = []
     for index, each_visit_res in enumerate(item['ip_geo']): # 遍历每一次访问
@@ -91,9 +93,6 @@ def live_period(domain):
                     ip_period[ip]['end'] = each_visit_res['insert_time'] #结束时间记为第一次探测到它不存在的情况
             last_ip = temp # 将这一次访问所得ip置于last_ip列表
             temp = []
-        # if index > 5:
-            # break
-    # print ip_period
     return_data['total'] = len(ip_period.keys())
     for ip in ip_period.keys(): # 计算每个ip的生命时长
         if ip_period[ip]['end'] =='': # 说明该ip刚出现过一次

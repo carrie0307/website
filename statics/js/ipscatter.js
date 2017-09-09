@@ -113,6 +113,7 @@ function set_option(data1)
 $.ajax({
     type:"get",
     url:"/ip_scatter_off",
+    //url:"/ip_scatter",
     cache:false,
     success:function(data1){
         set_option(data1); //调用函数，对请求所的data进行处理，并设置option
@@ -123,7 +124,13 @@ $.ajax({
 });
 
 
+
+
+
 $(document).ready(function(){
+
+
+
   //搜索框按钮事件处理
   $("#search-btn").click(function(e){
       var wd=$('#search-blank').val();

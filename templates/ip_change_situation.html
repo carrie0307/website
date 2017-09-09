@@ -8,22 +8,6 @@
     <meta name="keywords" content="Admin, Bootstrap 3, Template, Theme, Responsive">
     <!-- bootstrap 3.0.2 -->
     <link href="{{static_url("css/bootstrap.min.css")}}" rel="stylesheet" type="text/css" />
-    <!-- font Awesome -->
-    <link href="{{static_url("css/font-awesome.min.css")}}" rel="stylesheet" type="text/css" />
-    <!-- Ionicons -->
-    <link href="{{static_url("css/ionicons.min.css")}}" rel="stylesheet" type="text/css" />
-    <!-- Morris chart -->
-    <link href="{{static_url("css/morris/morris.css")}}" rel="stylesheet" type="text/css" />
-    <!-- jvectormap -->
-    <link href="{{static_url("css/jvectormap/jquery-jvectormap-1.2.2.css")}}" rel="stylesheet" type="text/css" />
-    <!-- Date Picker -->
-    <link href="{{static_url("css/datepicker/datepicker3.css")}}" rel="stylesheet" type="text/css" />
-    <!-- fullCalendar -->
-    <!-- <link href="css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" /> -->
-    <!-- Daterange picker -->
-    <link href="{{static_url("css/daterangepicker/daterangepicker-bs3.css")}}" rel="stylesheet" type="text/css" />
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link href="{{static_url("css/iCheck/all.css")}}" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <!-- <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> -->
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
@@ -32,7 +16,8 @@
 
     <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
 
-    <script src="{{static_url("js/echarts.js")}}"></script>
+
+
 
 
 
@@ -276,9 +261,9 @@
                                 </div>
                             </div>
                             <!-- search form -->
-                            <form action="#" method="get" id="search" class="sidebar-form">
+                            <form method="post" id="search" class="sidebar-form">
                                 <div class="input-group">
-                                    <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                                    <input type="text" name="q" class="form-control" id='search-blank' placeholder="Search..."/>
                                     <span class="input-group-btn">
                                         <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                                     </span>
@@ -312,6 +297,7 @@
                                     </a>
                                 </li>
                             </ul>
+
                         </section>
                         <!-- /.sidebar -->
                     </aside>
@@ -321,23 +307,9 @@
                     <aside class="right-side">
 
                 <!-- Main content -->
-                <div id="main" style="width: 1000px;height:400px;"></div>
 
-                <table id="dataTable">
-                <thead>
-            <!--
-                <tr>
-                    <th data-field="fullname" data-sortable="true">域名</th>
-                    <th data-field="shortname" data-sortable="true">IP变化次数</th>
-                    <th data-field="address" data-sortable="true">访问次数</th>
-                    <th data-field="linkman" data-sortable="true">变化</th>
-                </tr>
-            -->
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <ul id ="example"></ ul>
+
+            <ul id ="example"></ul>
             </div >
 
 
@@ -364,39 +336,13 @@
         <!-- jQuery 2.0.2 -->
        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
-
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
-       <!-- daterangepicker -->
-       <script src="{{static_url("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
-
-       <script src="{{static_url("js/plugins/chart.js")}}"></script>
-
-       <!-- datepicker
-       <script src="js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>-->
-       <!-- Bootstrap WYSIHTML5
-       <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
-       <!-- iCheck -->
-       <script src="{{static_url("js/plugins/iCheck/icheck.min.js")}}"></script>
-       <!-- calendar -->
-       <script src="{{static_url("js/plugins/fullcalendar/fullcalendar.js")}}"></script>
-
-       <!-- Director App -->
-       <script src="{{static_url("js/Director/app.js")}}"></script>
-
        <!-- Director dashboard demo (This is only for demo purposes) -->
        <script src="{{static_url("js/Director/dashboard.js")}}"></script>
-
-       <!-- jQuery 2.0.2 -->
-
-       <script src="{{static_url("js/index.js")}}"></script>
-       <script src="{{static_url("js/bootstrap-table.js")}}"></script>
-
-       <script src="{{static_url("js/index-chart.js")}}"></script>
-
        <!-- MyJS 2.0.2 -->
+       <script src="{{static_url("js/bootstrap-table.js")}}"></script>
+       <script src="{{static_url("js/echarts.js")}}"></script>
 
 
         <!-- Director for demo purposes -->
