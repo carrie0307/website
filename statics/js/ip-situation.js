@@ -93,13 +93,10 @@ $(document).ready(function() {
                     "data": "ip_geo"
                 },
                 {
-                    "data": "new_ip"
+                    "data": "update_ip"
                 },
-                {
-                    "data": "delete_ip"
-                }
             ],
-            "columnDefs": [{"targets": 6}]
+            "columnDefs": [{"targets": 5}]
 
             });
 

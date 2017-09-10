@@ -88,15 +88,12 @@ def ip_change_situation(domain):
         print this_geo_list
         ip_num = len(each_visit_res['ips']) #ip数量
         ips = each_visit_res['ips']
-        new_ip = list(set(ips).difference(set(last_ip))) #新增ip：这次有上次没有
-        delete_ip = list(set(last_ip).difference(set(ips))) #减少ip：上次有这次没有
-        # new_ip = '\n'.join(new_ip)
-        # delete_ip = '\n'.join(delete_ip)
-        new_ip = len(new_ip)
-        delete_ip = len(delete_ip)
+        update_ip = list(set(ips).difference(set(last_ip))) #新增ip：这次有上次没有
+        # update_ip = '\n'.join(update_ip)
+        update_ip = len(update_ip)
         last_ip = ips
-        return_data['data'].append({'time':insert_time,'time_gap':time_gap,'ip_num':ip_num,'ip_geo':this_geo_list,'new_ip':new_ip,'delete_ip':delete_ip})
-        # return_data['data'].append([insert_time,time_gap,ip_num,this_geo_list,new_ip,delete_ip])
+        return_data['data'].append({'time':insert_time,'time_gap':time_gap,'ip_num':ip_num,'ip_geo':this_geo_list,'update_ip':update_ip})
+        # return_data['data'].append([insert_time,time_gap,ip_num,this_geo_list,update_ip,delete_ip])
     # print return_data
     return return_data
 
