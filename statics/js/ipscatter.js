@@ -1,6 +1,6 @@
 var myChart = echarts.init(document.getElementById('ip-scatter'));
 // 指定图表的配置项和数据
-option = {
+var option = {
     title : {
         text: 'IP变化情况统计',
         //subtext: '抽样调查来自: Heinz  2003'
@@ -56,10 +56,10 @@ option = {
     series : []
 
 };
+myChart.setOption(option);// 初次加载图表(无数据)
+
 
 // 使用刚指定的配置项和数据显示图表。
-
-
 $.ajax({
     type:"get",
     url:"/ip_scatter_off",
@@ -117,5 +117,3 @@ $.ajax({
     },
 
 });
-
-myChart.setOption(option);// 初次加载图表(无数据)

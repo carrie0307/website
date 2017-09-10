@@ -62,6 +62,9 @@ def ip_change_situation(domain):
     return_data = {}
     return_data['data'] = []
     item = collection.find_one({'domain':domain})
+    return_data['frequency'] = {}
+    return_data['frequency']['change_times'] = len(item['dm_ip'])
+    return_data['frequency']['visit_times'] = item['visit_times'] + 1
     last_time = item['record_time']
     last_ip = []
     i = 0

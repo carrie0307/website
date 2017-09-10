@@ -17,10 +17,6 @@
     <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
 
 
-
-
-
-
     <!-- jQuery 2.0.2 -->
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
    <script src="{{static_url("js/jquery.min.js")}}"></script>
@@ -34,6 +30,10 @@
    <link href="{{static_url("css/datatable.min.css")}}" rel="stylesheet" type="text/css" />
    <script src="{{static_url("js/datatable.min.js")}}"></script>
 
+   <!--echarts -->
+   <script src="{{static_url("js/echarts.js")}}"></script>
+
+   <!-- Datatables -->
    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css" />
    <script src="http://cdn.gbtags.com/datatables/1.10.5/js/jquery.js"></script>
@@ -41,7 +41,7 @@
    <script type="text/javascript" language="javascript" src="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
 
-
+   <!-- My JS -->
    <script src="{{static_url("js/ip-situation.js")}}"></script>
 
 
@@ -275,7 +275,7 @@
                         </div>
                     </nav>
                 </header>
-                <div class="wrapper row-offcanvas row-offcanvas-left">
+                <div class="wrapper row-offcanvas row-offcanvas-left" >
                     <!-- Left side column. contains the logo and sidebar -->
                     <aside class="left-side sidebar-offcanvas">
                         <!-- sidebar: style can be found in sidebar.less -->
@@ -337,7 +337,13 @@
                     <aside class="right-side">
 
                 <!-- Main content -->
+                <div id="ip-pie" style="width:600px; height: 350px; left: 230px" ></div>
 
+
+                <!-- 变化频率饼图 -->
+
+
+                <!-- 变化具体情况表格 -->
                 <table id="ip-table" class="table table-striped table-bordered" align="center" style="width:90%">
                     <thead align="center">
                         <tr>
