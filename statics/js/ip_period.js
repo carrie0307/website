@@ -3,7 +3,7 @@ $(document).ready(function(){
 });
 
 //自定义ajax
-
+/*
 function ajaxRequest(){
     //访问服务器获取所需要的数据
     //比如使用$.ajax获得请求某个url获得数据
@@ -26,6 +26,8 @@ function ajaxRequest(){
 
     });
 }
+*/
+
 
 //自定义参数
 function postQueryParams(params) {

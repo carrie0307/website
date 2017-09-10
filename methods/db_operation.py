@@ -9,10 +9,10 @@ import time
 client = MongoClient()
 client = MongoClient('172.29.152.152', 27017)
 db = client.eds_last
-collection = db.domain_ip_geo_copy
+collection = db.domain_ip_cname
 
 
-# 计算所有domain的ip更换频率
+# 计算所有domain的ip更换频率--index的柱状图
 def change_frequency():
     global collection
     datalist = []
@@ -29,10 +29,10 @@ def change_frequency():
             break
         i += 1
         temp = {}
-        change_times = len(item['ip_geo'])
+        change_times = len(item['dm_ip'])
         if 'visit_times' in item.keys():
             if item['visit_times'] < change_times:
-                visit_times = len(item['ip_geo'])
+                visit_times = len(item['dm_ip'])
             else:
                 visit_times = item['visit_times'] + 1
         else:
@@ -50,19 +50,54 @@ def ip_change(domain):
     return_data = {}
     return_data['rows'] = {}
     item = collection.find_one({'domain':domain})
-    for each_visit_res in item['ip_geo']:
+    for each_visit_res in item['dm_ip']:
         return_data['rows'][each_visit_res['insert_time']] = each_visit_res['ips']
-    return_data['total'] = len(item['ip_geo'])
+    return_data['total'] = len(item['dm_ip'])
     return return_data
 
 
-# ip变动具体统计
+# ip变动具体统计--ip_situation
 def ip_change_situation(domain):
     global collection
-    
+    return_data = {}
+    return_data['data'] = []
+    item = collection.find_one({'domain':domain})
+    last_time = item['record_time']
+    last_ip = []
+    i = 0
+    for each_visit_res in item['dm_ip']:
+        i += 1
+        insert_time = each_visit_res['insert_time']
+        time_gap = ((datetime.datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(last_time, "%Y-%m-%d %H:%M:%S")).seconds) / 3600 # 以小时为单位
+        time_gap = round(time_gap, 2) #距离上次更新时间间隔
+        last_time = insert_time # 将当次时间置为上次时间，以便下次处理
+        ip_geos = each_visit_res['geos'] # ip_geo是当前这次访问所有ip的地理位置列表
+        this_geo_list = []
+        # 获取当前访问所有ip的地理位置分布
+        for geo in ip_geos:
+            this_geo = '' # 一条ip的地理位置
+            for key in ['country', 'region', 'city']:
+                if geo[key] != '0':
+                    this_geo = this_geo + geo[key] + '-'
+            this_geo_list.append(this_geo[0:-1])
+        this_geo_list = list(set(this_geo_list)) # 去重
+        this_geo_list = '、'.join(this_geo_list) # 转化为字符串
+        print this_geo_list
+        ip_num = len(each_visit_res['ips']) #ip数量
+        ips = each_visit_res['ips']
+        new_ip = list(set(ips).difference(set(last_ip))) #新增ip：这次有上次没有
+        delete_ip = list(set(last_ip).difference(set(ips))) #减少ip：上次有这次没有
+        # new_ip = '\n'.join(new_ip)
+        # delete_ip = '\n'.join(delete_ip)
+        new_ip = len(new_ip)
+        delete_ip = len(delete_ip)
+        last_ip = ips
+        return_data['data'].append({'time':insert_time,'time_gap':time_gap,'ip_num':ip_num,'ip_geo':this_geo_list,'new_ip':new_ip,'delete_ip':delete_ip})
+        # return_data['data'].append([insert_time,time_gap,ip_num,this_geo_list,new_ip,delete_ip])
+    # print return_data
+    return return_data
 
-
-
+# ip_period
 def live_period(domain):
     '''
     这里有些问题，需要改
@@ -74,7 +109,7 @@ def live_period(domain):
     ip_list = []
     item = collection.find_one({'domain':domain})
     last_ip = []
-    for index, each_visit_res in enumerate(item['ip_geo']): # 遍历每一次访问
+    for index, each_visit_res in enumerate(item['dm_ip']): # 遍历每一次访问
         ip_list.extend(each_visit_res['ips'])
         if index == 0:
             for ip in each_visit_res['ips']:
@@ -110,7 +145,8 @@ def live_period(domain):
 
 if __name__ == '__main__':
     # print change_frequency()
-    print ip_change('www-4s.cc')
+    # print ip_change('www-4s.cc')
     # www-4s.cc
     # 7777744444.com
     # return_data = live_period('www-4s.cc')
+    ip_change_situation('www-4s.cc')
