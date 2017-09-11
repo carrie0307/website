@@ -84,7 +84,7 @@ def ip_change_situation(domain):
                     this_geo = this_geo + geo[key] + '-'
             this_geo_list.append(this_geo[0:-1])
         this_geo_list = list(set(this_geo_list)) # 去重
-        this_geo_list = '、'.join(this_geo_list) # 转化为字符串
+        this_geo_list = '</br>'.join(this_geo_list) # 转化为字符串
         print this_geo_list
         ip_num = len(each_visit_res['ips']) #ip数量
         ips = each_visit_res['ips']

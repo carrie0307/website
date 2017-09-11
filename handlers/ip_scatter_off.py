@@ -9,6 +9,7 @@ class ipScatter_OffHandler(tornado.web.RequestHandler):
         self.write(ip_change_res)
 
     def post(self):
+        print '----'
         domain = self.get_argument('domain')
         print domain
         ip_change_res = ip_change(domain)

@@ -74,6 +74,7 @@ $(document).ready(function() {
 
             //表格内容
             var t = $('#ip-table').DataTable({
+                searching: false,
                 //每页显示n条数据
                 pageLength: 10,
                 data: dataSet,
@@ -122,7 +123,6 @@ $(document).ready(function() {
                     cell.innerHTML = i + 1;
                 });
             }).draw();
-
 
 
         //});
