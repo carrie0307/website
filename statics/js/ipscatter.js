@@ -76,8 +76,7 @@ function deal_data(data1)
     {
         for(i=0;i<real_data[value].length;i++)
         {
-            xy.push([value,real_data[value][i]]);//实际的数据，x轴是日期，y周是ip对应的index（数字化）
-            //xy.push([real_data[value][i],value]);//实际的数据，x轴是日期，y周是ip对应的index（数字化）
+            xy.push([value,real_data[value][i]]);//实际的数据，x轴是日期，y周是ip
         }
         real_series.push({name:value, type:'scatter',data:xy});
         xy=[];
@@ -125,13 +124,12 @@ $.ajax({
 });
 
 
-
-
+//搜索按钮功能
 $("#search-btn").click(function(event){
 
   event.preventDefault();
   var wd=$("#search-blank").val();
-  
+
   $.ajax({
       type:"post",
       url:"/ip_scatter_off",
@@ -147,6 +145,5 @@ $("#search-btn").click(function(event){
       },
 
   });
-
 
 });
