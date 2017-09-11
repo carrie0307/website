@@ -5,9 +5,11 @@ from methods.db_operation import ip_change_situation
 class ipSituation_OffHandler(tornado.web.RequestHandler):
     def get(self):
         ip_situation = ip_change_situation('www-4s.cc')
-        # ip_situation = ip_change_situation('hk308.com')
-        # print ip_situation
         self.write(ip_situation)
 
     def post(self):
-        pass
+        print '---'
+        domain = self.get_argument('domain')
+        print domain
+        ip_situation = ip_change_situation(domain)
+        self.write(ip_situation)

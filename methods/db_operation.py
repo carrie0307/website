@@ -85,7 +85,6 @@ def ip_change_situation(domain):
             this_geo_list.append(this_geo[0:-1])
         this_geo_list = list(set(this_geo_list)) # 去重
         this_geo_list = '</br>'.join(this_geo_list) # 转化为字符串
-        print this_geo_list
         ip_num = len(each_visit_res['ips']) #ip数量
         ips = each_visit_res['ips']
         update_ip = list(set(ips).difference(set(last_ip))) #新增ip：这次有上次没有
@@ -149,4 +148,5 @@ if __name__ == '__main__':
     # www-4s.cc
     # 7777744444.com
     # return_data = live_period('www-4s.cc')
-    ip_change_situation('www-4s.cc')
+    # ip_change_situation('www-4s.cc')
+    print ip_change_situation('511789.com')
