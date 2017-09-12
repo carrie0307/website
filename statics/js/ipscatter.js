@@ -38,7 +38,7 @@ var option = {
             data:[],
             axisLabel:{
                 interval:'auto',
-                rotate:30,//旋转角度，为0表示水平
+                rotate:20,//旋转角度，为0表示水平
             }
         }
     ],
