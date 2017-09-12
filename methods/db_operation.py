@@ -75,23 +75,31 @@ def ip_change_situation(domain):
         time_gap = round(time_gap, 2) #距离上次更新时间间隔
         last_time = insert_time # 将当次时间置为上次时间，以便下次处理
         ip_geos = each_visit_res['geos'] # ip_geo是当前这次访问所有ip的地理位置列表
-        this_geo_list = []
+        this_geo_list = [] # 地理位置城市列表
         # 获取当前访问所有ip的地理位置分布
+        geo_detail = {} #地理位置信息，包括地理位置以及每个位置对应的数量
         for geo in ip_geos:
             this_geo = '' # 一条ip的地理位置
             for key in ['country', 'region', 'city']:
                 if geo[key] != '0':
                     this_geo = this_geo + geo[key] + '-'
             this_geo_list.append(this_geo[0:-1])
+            if this_geo[0:-1] in geo_detail.keys():
+                geo_detail[this_geo[0:-1]] += 1
+            else:
+                geo_detail[this_geo[0:-1]] = 1
         this_geo_list = list(set(this_geo_list)) # 去重
         this_geo_list = '</br>'.join(this_geo_list) # 转化为字符串
-        ip_num = len(each_visit_res['ips']) #ip数量
+        geo_info = {'geo':this_geo_list, 'geo_detail':geo_detail}
+        ip_info = {}
+        ip_info['num'] = len(each_visit_res['ips']) #ip数量
+        ip_info['ips'] = '\n'.join(each_visit_res['ips']) # 具体ip
         ips = each_visit_res['ips']
-        update_ip = list(set(ips).difference(set(last_ip))) #新增ip：这次有上次没有
-        # update_ip = '\n'.join(update_ip)
-        update_ip_num = len(update_ip)
+        update_ip = {}
+        update_ip['num'] = len(list(set(ips).difference(set(last_ip))))
+        update_ip['ips'] = '\n'.join(list(set(ips).difference(set(last_ip))))
         last_ip = ips
-        return_data['data'].append({'time':insert_time,'time_gap':time_gap,'ip_num':ip_num,'ip_geo':this_geo_list,'update_ip_num':update_ip_num})
+        return_data['data'].append({'time':insert_time,'time_gap':time_gap,'ip':ip_info,'ip_geo':geo_info,'update_ip':update_ip})
         # return_data['data'].append([insert_time,time_gap,ip_num,this_geo_list,update_ip,delete_ip])
     # print return_data
     return return_data
@@ -148,5 +156,5 @@ if __name__ == '__main__':
     # www-4s.cc
     # 7777744444.com
     # return_data = live_period('www-4s.cc')
-    # ip_change_situation('www-4s.cc')
-    print ip_change_situation('511789.com')
+    print ip_change_situation('www-4s.cc')
+    # print ip_change_situation('511789.com')

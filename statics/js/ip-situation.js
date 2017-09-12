@@ -89,32 +89,59 @@ $(document).ready(function() {
                 "data": "time_gap"
             },
             {
-                "data": "ip_num"
+                "data": "ip"
             },
             {
                 "data": "ip_geo"
             },
             {
-                "data": "update_ip_num"
+                "data": "update_ip"
             },
         ],
         //"columnDefs":可以对各列内容进行处理，从而显示想显示的内容
         columnDefs: [
             {
             "targets": [3],
-            "data": "ip_num",
+            "data": "ip",
             "render": function(data, type, full) {
-                //给表格内容加上了链接
+                //给表格内容加上了链接,通过a标签的title显示详细信息（这里支持\n),用a标签内容显示实际表格的内容，这里注意"+data+"写法，且此处支持</br>换行
                 //return "<a title='"+data+"' href='/update?t_unid=" + data + "'>"+data+"</a>";// 也可以不用a标签，用<span>
-                return data;
+                //如果用的是span，页面不会显示出超链接的样子，颜色不变
+                var ip_num=data['num'];
+                var ips=data["ips"];
+                return "<a title='"+ips+"' href=''>"+ip_num+"</a>";// 也可以不用a标签，用<span>
+                }
+            },
+            {
+            "targets": [4],
+            "data": "ip_geo",
+            "render": function(data, type, full) {
+                //给表格内容加上了链接,通过a标签的title显示详细信息（这里支持\n),用a标签内容显示实际表格的内容，这里注意"+data+"写法，且此处支持</br>换行
+                //return "<a title='"+data+"' href='/update?t_unid=" + data + "'>"+data+"</a>";// 也可以不用a标签，用<span>
+                //如果用的是span，页面不会显示出超链接的样子，颜色不变
+                var geo=data['geo'];
+                var detail="";
+                for (value in data['geo_detail'])
+                {
+                    detail = detail + value + ':' + data['geo_detail'][value].toString() + '\n'
+                }
+                return "<a title='"+detail+"' href=''>"+geo+"</a>";// 也可以不用a标签，用<span>
+                }
+            },
+            {
+            "targets": [5],
+            "data": "update_ip",
+            "render": function(data, type, full) {
+                var num=data['num']; //ip数量
+                var ips=data['ips']; //具体ip
+                //return "<a title='"+ips+"' href=''>"+num+"</a>";// 也可以不用a标签，用<span>
+                return "<a title='"+ips+"' href=''>"+num+"</a>";// 也可以不用a标签，用<span>
                 }
             },
             {"targets": 5},
         ]
 
         });
-
-
 
         //前台添加序号
         t.on('order.dt search.dt',
@@ -128,7 +155,6 @@ $(document).ready(function() {
         }).draw();
 
     }
-
 
     //请求数据
     $.ajax({
@@ -144,6 +170,22 @@ $(document).ready(function() {
             alert("error!");
         },
     });
+
+
+    /*
+    //弹出一个页面层
+    $('column-4').hover(function(){
+      layer.open({
+      type: 1,
+      area: ['600px', '360px'],
+      shadeClose: true, //点击遮罩关闭
+      content: '\<\div style="padding:20px;">自定义内容\<\/div>'
+      });
+
+
+    });
+    */
+
 
     //搜索按钮功能
     $("#search-btn").click(function(event){
@@ -169,5 +211,6 @@ $(document).ready(function() {
       });
 
     });
+
 
 });
