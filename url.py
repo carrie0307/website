@@ -20,6 +20,9 @@ from handlers.ip_scatter_off import ipScatter_OffHandler # 具体每个域名的
 from handlers.ip_situation import ipSituationHandler
 from handlers.ip_situation_off import ipSituation_OffHandler
 
+from handlers.ip_percent import ipPercent_Handler
+from handlers.ip_percent_off import ipPercent_OffHandler
+
 
 url = [
     (r'/', IndexHandler),
@@ -29,5 +32,7 @@ url = [
     ('/ip_scatter', ipScatterHandler), # 展示每个域名ip具体变化散点图的页面
     (r'/ip_scatter_off',ipScatter_OffHandler),
     (r'/ip_change_situation',ipSituationHandler), # ip变化具体情况，包括ip增减等
-    (r'/ip_change_situation_off',ipSituation_OffHandler)
+    (r'/ip_change_situation_off',ipSituation_OffHandler),
+    (r'/ip_percent',ipPercent_Handler),
+    (r'/ip_percent_off',ipPercent_OffHandler)
 ]

@@ -9,7 +9,7 @@ import time
 client = MongoClient()
 client = MongoClient('172.29.152.152', 27017)
 db = client.eds_last
-collection = db.domain_ip_cname
+collection = db.domain_ip_cname1
 
 
 # 计算所有domain的ip更换频率--index的柱状图
@@ -104,7 +104,8 @@ def ip_change_situation(domain):
     # print return_data
     return return_data
 
-# ip_period
+
+# ip_period IP服务时长
 def live_period(domain):
     '''
     这里有些问题，需要改
@@ -149,12 +150,62 @@ def live_period(domain):
     return return_data
 
 
+# 每一类域名拥有ip数量比例统计 ip_percent.html
+def ip_num_percent():
+    '''
+    {
+    'Gamble':[[ip_num, percint], [ip_num, percint], ...]}，
+    'Porno':{[ip_num, percint], [ip_num, percint], ...]}，
+    'ip_num': 平均ip数量列表， 'percent': 该数量ip占该类型ip数量百分比
+    }
+    '''
+
+    def domain_deal(domains):
+        '''
+            domains = collection.find({'type':'***'})
+            对某类型域名进行具体统计的函数
+        '''
+        data = []
+        domain_num = domains.count() # 该类型域名总量
+        num_dict = {} # {ip平均数量: 该数量域名占域名总量的比例}
+        for item in domains:
+            change_times = len(item['dm_ip']) # 该域名ip变动次数
+            ip_total = 0 # 该域名ip总量
+            for each_visit in item['dm_ip']:
+                ip_total += len(each_visit['ips'])
+            ip_aveg_num = int(ip_total / change_times) # 该域名平均ip数量
+            # print ip_aveg_num
+            if ip_aveg_num in num_dict.keys():
+                num_dict[ip_aveg_num] += 1
+            else:
+                num_dict[ip_aveg_num] = 1
+        for num in num_dict.keys():
+            data.append([num, round((num_dict[num] / domains_num) * 100, 2)])
+        return data
+
+    global collection
+    return_data = {}
+    return_data['Gamble'] = {}
+    return_data['Porno'] = {}
+    Gamble_domains = collection.find({'dm_type':'Gamble'})
+    domains_num = Gamble_domains.count()
+    Porno_domains = collection.find({'dm_type':'Porno'})
+    gamble_data = domain_deal(Gamble_domains)
+    porno_data = domain_deal(Porno_domains)
+    return_data['Gamble'] = gamble_data
+    return_data['Porno'] = porno_data
+    return return_data
+
+
+
+
 
 if __name__ == '__main__':
     # print change_frequency()
-    # print ip_change('www-4s.cc')
+    # print ip_change('www.www-4s.cc')
     # www-4s.cc
     # 7777744444.com
-    # return_data = live_period('www-4s.cc')
-    print ip_change_situation('www-4s.cc')
-    # print ip_change_situation('511789.com')
+    # live_period('www.www-4s.cc')
+    # print ip_change_situation('www.www-4s.cc')
+    # print ip_change_situation('www.511789.com')
+    print ip_num_percent()
