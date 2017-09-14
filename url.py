@@ -23,6 +23,9 @@ from handlers.ip_situation_off import ipSituation_OffHandler
 from handlers.ip_percent import ipPercent_Handler
 from handlers.ip_percent_off import ipPercent_OffHandler
 
+from handlers.ip_net_sector import ipNetSector_Handler
+from handlers.ip_net_sector_off import ipNetSector_OffHandler
+
 
 url = [
     (r'/', IndexHandler),
@@ -34,5 +37,8 @@ url = [
     (r'/ip_change_situation',ipSituationHandler), # ip变化具体情况，包括ip增减等
     (r'/ip_change_situation_off',ipSituation_OffHandler),
     (r'/ip_percent',ipPercent_Handler),
-    (r'/ip_percent_off',ipPercent_OffHandler)
+    (r'/ip_percent_off',ipPercent_OffHandler),
+    (r'/ip_net_sector',ipNetSector_Handler),
+    (r'/ip_net_sector_off',ipNetSector_OffHandler)
+
 ]

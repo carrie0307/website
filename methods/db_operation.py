@@ -4,6 +4,7 @@ from pymongo import *
 import operator
 import datetime
 import time
+from ip_netSector import ip_category
 
 '''建立连接'''
 client = MongoClient()
@@ -197,6 +198,20 @@ def ip_num_percent():
     return return_data
 
 
+def ip_net_sector(domain):
+    return_data = {}
+    global collection
+    item = collection.find_one({'domain':domain})
+    ips = []
+    for each_visit in item['dm_ip']:
+        ips.extend(each_visit['ips'])
+    ips = list(set(ips)) # 获取到所有的ip
+    ip_dealer = ip_category()
+    general_ipsector = ip_dealer.judge_Sector(ips)
+    return_data['domain_general'] = general_ipsector
+    return return_data
+
+
 
 
 
@@ -208,4 +223,5 @@ if __name__ == '__main__':
     # live_period('www.www-4s.cc')
     # print ip_change_situation('www.www-4s.cc')
     # print ip_change_situation('www.511789.com')
-    print ip_num_percent()
+    # print ip_num_percent()
+    print ip_net_sector('www.www-4s.cc')
