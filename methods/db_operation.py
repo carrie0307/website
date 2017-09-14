@@ -203,11 +203,32 @@ def ip_net_sector(domain):
     global collection
     item = collection.find_one({'domain':domain})
     ips = []
+    geo_dict = {}
     for each_visit in item['dm_ip']:
         ips.extend(each_visit['ips'])
+        for index,ip in enumerate(each_visit['ips']):
+            this_geo = ''
+            geo = each_visit['geos'][index] # 当前ip的地理位置字典
+            for key in ['country', 'region', 'city']:
+                if geo[key] != '0':
+                    this_geo = this_geo + geo[key] + '-'
+            this_geo = this_geo[:-1]
+            if this_geo in geo_dict.keys(): # 若该地理位置在geo_dict中
+                if ip not in geo_dict[this_geo]:
+                    geo_dict[this_geo].append(ip) # 如果改ip未在该地理位置集合中，则加入
+            else:
+                geo_dict[this_geo] = [ip]
     ips = list(set(ips)) # 获取到所有的ip
     ip_dealer = ip_category()
     general_ipsector = ip_dealer.judge_Sector(ips)
+    # return_data['domain_general'] = general_ipsector
+    for record in general_ipsector:
+        record['geo'] = []
+        for ip in record['ips']: # 判断每个ip的地理位置
+            for geo in geo_dict.keys():
+                if ip in geo_dict[geo] and geo not in record['geo']: # 如果属于某个地理位置
+                    print geo
+                    record['geo'].append(geo)
     return_data['domain_general'] = general_ipsector
     return return_data
 

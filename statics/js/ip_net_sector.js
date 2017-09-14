@@ -15,13 +15,16 @@ $(document).ready(function(){
                 "data": null //此列不绑定数据源，用来显示序号
             },
             {
-                "data": "sector"
-            },
-            {
                 "data": "category"
             },
             {
+                "data": "sector"
+            },
+            {
                 "data": "ips"
+            },
+            {
+                "data": "geo"
             }
         ],
         //"columnDefs":可以对各列内容进行处理，从而显示想显示的内容
@@ -41,7 +44,21 @@ $(document).ready(function(){
                 //return data.length
                 }
             },
-            {"targets": 3},
+            {
+            "targets": [3],
+            "data": "ip",
+            "render": function(data, type, full) {
+
+                var geo_data="";
+                for(var i=0;i<data.length;i++)
+                {
+                    geo_data = geo_data + geo_data + '\n'
+	            }
+
+                return geo_data
+                }
+            },
+            {"targets": 4},
         ],
 
         });
