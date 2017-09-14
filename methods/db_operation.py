@@ -168,28 +168,31 @@ def ip_num_percent():
         '''
         data = []
         domain_num = domains.count() # 该类型域名总量
-        num_dict = {} # {ip平均数量: 该数量域名占域名总量的比例}
+        # num_dict = {'0':0,'1':0,'2':0,'3~10':0,'11~15':0,'>15':0}  #{ip平均数量: 该数量域名占域名总量的比例}
+        num_info = [0,0,0,0,0,0]
         for item in domains:
             change_times = len(item['dm_ip']) # 该域名ip变动次数
             ip_total = 0 # 该域名ip总量
             for each_visit in item['dm_ip']:
                 ip_total += len(each_visit['ips'])
             ip_aveg_num = int(ip_total / change_times) # 该域名平均ip数量
-            # print ip_aveg_num
-            if ip_aveg_num in num_dict.keys():
-                num_dict[ip_aveg_num] += 1
-            else:
-                num_dict[ip_aveg_num] = 1
-        for num in num_dict.keys():
-            data.append([num, round((num_dict[num] / domains_num) * 100, 2)])
-        return data
+            if ip_aveg_num <= 2:
+                num_info[ip_aveg_num] += 1
+            elif 3 <= ip_aveg_num <= 10:
+                num_info[3] += 1
+            elif 11 <= ip_aveg_num <= 15:
+                num_info[4] += 1
+            elif ip_aveg_num >= 15:
+                num_info[5] += 1
+        for i in range(len(num_info)):
+            num_info[i] = round((num_info[i] / domain_num) * 100, 2)
+        return num_info
 
     global collection
     return_data = {}
     return_data['Gamble'] = {}
     return_data['Porno'] = {}
     Gamble_domains = collection.find({'dm_type':'Gamble'})
-    domains_num = Gamble_domains.count()
     Porno_domains = collection.find({'dm_type':'Porno'})
     gamble_data = domain_deal(Gamble_domains)
     porno_data = domain_deal(Porno_domains)
@@ -198,6 +201,7 @@ def ip_num_percent():
     return return_data
 
 
+# 单一域名的ip网段统计
 def ip_net_sector(domain):
     return_data = {}
     global collection
@@ -244,5 +248,5 @@ if __name__ == '__main__':
     # live_period('www.www-4s.cc')
     # print ip_change_situation('www.www-4s.cc')
     # print ip_change_situation('www.511789.com')
-    # print ip_num_percent()
-    print ip_net_sector('www.www-4s.cc')
+    print ip_num_percent()
+    # print ip_net_sector('www.www-4s.cc')

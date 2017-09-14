@@ -30,8 +30,16 @@ $(document).ready(function(){
         //"columnDefs":可以对各列内容进行处理，从而显示想显示的内容
         columnDefs: [
             {
+            "targets": [1],
+            "data": "category",
+            "render": function(data, type, full) {
+                var category = data + "类地址";
+                return category;
+                }
+            },
+            {
             "targets": [3],
-            "data": "ip",
+            "data": "ips",
             "render": function(data, type, full) {
 
                 var ip_data="";
@@ -45,8 +53,8 @@ $(document).ready(function(){
                 }
             },
             {
-            "targets": [3],
-            "data": "ip",
+            "targets": [4],
+            "data": "geo",
             "render": function(data, type, full) {
 
                 var geo_data="";
@@ -55,7 +63,8 @@ $(document).ready(function(){
                     geo_data = geo_data + geo_data + '\n'
 	            }
 
-                return geo_data
+                //return geo_data;
+                return data[0];
                 }
             },
             {"targets": 4},
