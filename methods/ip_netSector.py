@@ -74,11 +74,9 @@ class ip_category():
                         sector_dict[category][res].append(ip)
                     else:
                         sector_dict[category][res] = [ip]
-        i = 1
         for key in sector_dict:
             for res in sector_dict[key]:
-                return_data.append({'sector': '网段' + str(i), 'category': key, 'ips': sector_dict[key][res]})
-                i = i + 1
+                return_data.append({'category': key, 'ips': sector_dict[key][res]})
         return return_data
 
 

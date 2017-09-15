@@ -237,6 +237,52 @@ def ip_net_sector(domain):
     return return_data
 
 
+def general_ip_sector(dm_type):
+    global collection
+    res = collection.find({'dm_type':dm_type})
+    ips = []
+    ip_dict = {} # 以ip为key，关于地理位置和域名的字典
+    geo_dict = {} # 以地理位置为key，关于ip的字典
+    i = 0
+    for item in res:
+        # i = i + 1
+        # if i > 20:
+            # break
+        for each_visit in item['dm_ip']:
+            ips.extend(each_visit['ips'])
+            for index,ip in enumerate(each_visit['ips']): # 建立每个ip的地理位置与域名的对应关系
+                temp = {}
+                if ip not in ip_dict.keys(): # 初次遇到的ip，建立域名的列表,并提取地理位置信息
+                    temp['domain'] = [item['domain']]# 建立域名的列表
+                    this_geo = ''
+                    geo = each_visit['geos'][index]
+                    for key in ['country', 'region', 'city']:
+                        if geo[key] != '0':
+                            this_geo = this_geo + geo[key] + '-'
+                    temp['geo'] = this_geo[:-1] # 获取到地理位位置信息
+                    ip_dict[ip] = temp
+                else: # 已处理u过的ip，将新的域名加入列表
+                    ip_dict[ip]['domain'].append(item['domain'])
+                # 建立地理位置字典
+    ips = list(set(ips))
+    ip_dealer = ip_category()
+    ip_sector_info = ip_dealer.judge_Sector(ips) # 所有ip的网段信息
+    for record in ip_sector_info:
+        record['geo'] = []
+        record['domain'] = []
+        for ip in record['ips']:
+            record['geo'].append(ip_dict[ip]['geo'])
+            record['domain'].extend(ip_dict[ip]['domain'])
+    return_data = {}
+    return_data['domain_general'] = ip_sector_info
+    # print ip_sector_info
+    return return_data
+
+
+
+
+
+
 
 
 
@@ -248,5 +294,6 @@ if __name__ == '__main__':
     # live_period('www.www-4s.cc')
     # print ip_change_situation('www.www-4s.cc')
     # print ip_change_situation('www.511789.com')
-    print ip_num_percent()
+    # print ip_num_percent()
     # print ip_net_sector('www.www-4s.cc')
+    general_ip_sector('Gamble')

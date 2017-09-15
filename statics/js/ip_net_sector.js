@@ -18,10 +18,10 @@ $(document).ready(function(){
                 "data": "category"
             },
             {
-                "data": "sector"
+                "data": "ips"
             },
             {
-                "data": "ips"
+                "data": "domain"
             },
             {
                 "data": "geo"
@@ -38,7 +38,7 @@ $(document).ready(function(){
                 }
             },
             {
-            "targets": [3],
+            "targets": [2],
             "data": "ips",
             "render": function(data, type, full) {
 
@@ -53,6 +53,21 @@ $(document).ready(function(){
                 }
             },
             {
+            "targets": [3],
+            "data": "domain",
+            "render": function(data, type, full) {
+
+                var domain_data="";
+                for(var i=0;i<data.length;i++)
+                {
+                    domain_data = domain_data + data[i] + '\n'
+	            }
+
+                return "<a title='"+domain_data+"' href=''>"+data.length+"</a>";
+
+                }
+            },
+            {
             "targets": [4],
             "data": "geo",
             "render": function(data, type, full) {
@@ -60,14 +75,14 @@ $(document).ready(function(){
                 var geo_data="";
                 for(var i=0;i<data.length;i++)
                 {
-                    geo_data = geo_data + geo_data + '\n'
+                    geo_data = geo_data + data[i] + '\n'
 	            }
 
                 //return geo_data;
                 return data[0];
                 }
             },
-            {"targets": 4},
+            {"targets": 3},
         ],
 
         });
