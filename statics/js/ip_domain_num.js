@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     function data_deal(data1)
     {
-        dataSet = data1
+        dataSet = data1['data'];
         //dataSet=data1['row']; //这里其实是列表了
         var t = $('#ip-domain-table').DataTable({
             destroy: true,
@@ -91,7 +91,6 @@ $(document).ready(function(){
        url:"/ip_domain_num_off",
        cache:false,
        success:function(data1){
-           alert('success');
            data_deal(data1);
        },
        error:function(){

@@ -301,11 +301,16 @@ def general_ip_domain(dm_type):
                 for key in ['country', 'region', 'city']:
                     if geo[key] != '0':
                         this_geo = this_geo + geo[key] + '-'
-                if ip not in ip_dict.keys():
+                if ip not in ip_dict.keys(): # 第一次处理到这个ip
                     ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [item['domain']], 'category': ip_dealer.judge_category(ip)}
                 else:
-                    ip_dict[ip]['domains'].append(item['domain'])
-    print ip_dict
+                    if item['domain'] not in ip_dict[ip]['domains']:
+                        ip_dict[ip]['domains'].append(item['domain'])
+    return_data = {}
+    dic= sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True)
+    return_data['data'] = [item[1] for item in dic]
+    # return_data['data'] = ip_dict.values()
+    return return_data
 
 
 if __name__ == '__main__':
