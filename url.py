@@ -26,6 +26,9 @@ from handlers.ip_percent_off import ipPercent_OffHandler
 from handlers.ip_net_sector import ipNetSector_Handler
 from handlers.ip_net_sector_off import ipNetSector_OffHandler
 
+from handlers.ip_domain_num import ipDomain_Handler
+from handlers.ip_domain_num_off import ipDomain_OffHandler
+
 
 url = [
     (r'/', IndexHandler),
@@ -39,6 +42,8 @@ url = [
     (r'/ip_percent',ipPercent_Handler),
     (r'/ip_percent_off',ipPercent_OffHandler),
     (r'/ip_net_sector',ipNetSector_Handler),
-    (r'/ip_net_sector_off',ipNetSector_OffHandler)
+    (r'/ip_net_sector_off',ipNetSector_OffHandler),
+    (r'/ip_domain_num',ipDomain_Handler),
+    (r'/ip_domain_num_off',ipDomain_OffHandler)
 
 ]
