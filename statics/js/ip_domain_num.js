@@ -44,7 +44,6 @@ $(document).ready(function(){
             "targets": [4],
             "data": "domains",
             "render": function(data, type, full) {
-
                 var domain_data="";
                 var domain_num;
                 if (domain_type != "all")
@@ -52,18 +51,23 @@ $(document).ready(function(){
 
                     for(var i=0;i<data.length;i++)
                     {
-                        domain_data = domain_data + data[i] + '\n'
+                        domain_data = domain_data + data[i] + '\n';
     	            }
                     return "<a title='"+domain_data+"' href=''>"+data.length+"</a>";
                 }
-                else {
-                    domain_data = "赌博： " + data[0] + "\n" + "色情: " + data[1] + "\n";
-                    domain_num = data[0] + data[1];
-                    return "<a title='"+domain_data+"' href=''>"+domain_num+"</a>";
+                else
+                {
+                    if (data[0].length!=0 && data[1].length != 0)
+                    {
+                        domain_data = "赌博： " + data[0].length + "  色情: " + data[1].length;
+                        return domain_data;
+                    }
+                    else if(data[0].length != 0)
+                    {   return "赌博： " + data[0].length; }
+                    else
+                    {   return domain_data = "色情: " + data[1].length;}
+
                 }
-
-
-
                 }
             },
             {

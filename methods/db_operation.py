@@ -325,11 +325,7 @@ def general_ip_domain(dm_type):
         res = collection.find()
     ips = []
     ip_dict= {} # 以ip为key，内容为域名的列表
-    i = 0
     for item in res:
-        if i > 5:
-            break
-        i += 1
         for each_visit in item['dm_ip']:
             for index, ip in enumerate(each_visit['ips']):
                 # 获取地理位置
@@ -346,18 +342,20 @@ def general_ip_domain(dm_type):
                             ip_dict[ip]['domains'].append(item['domain'])
                 else:# 全部域名的情况
                     if ip not in ip_dict.keys():
-                        ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [0,0], 'category': ip_dealer.judge_category(ip)}
+                        ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [[],[]], 'category': ip_dealer.judge_category(ip)}
                     if item['dm_type'] == 'Gamble':
-                        ip_dict[ip]['domains'][0] +=1
+                        if item['domain'] not in ip_dict[ip]['domains'][0]:
+                            ip_dict[ip]['domains'][0].append(item['domain'])
                     else:
-                        ip_dict[ip]['domains'][1] +=1
+                        if item['domain'] not in ip_dict[ip]['domains'][1]:
+                            ip_dict[ip]['domains'][1].append(item['domain'])
     return_data = {}
     # 按照提供服务域名总量排序
     if dm_type != 'all':
         dic= sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True)
         return_data['data'] = [item[1] for item in dic]
     else:
-        dic= sorted(ip_dict.iteritems(), key=lambda d:d[1]['domains'][0] + d[1]['domains'][1], reverse = True) # 按照提供服务域名总量排序
+        dic= sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains'][0]) + len(d[1]['domains'][1]), reverse = True) # 按照提供服务域名总量排序
         return_data['data'] = [item[1] for item in dic]
     return return_data
 
