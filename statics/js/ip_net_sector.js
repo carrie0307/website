@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    function data_deal(data1)
+    function data_deal(data1, domain_type)
     {
         dataSet = data1['domain_general']
         //dataSet=data1['row']; //这里其实是列表了
@@ -58,12 +58,21 @@ $(document).ready(function(){
             "render": function(data, type, full) {
 
                 var domain_data="";
-                for(var i=0;i<data.length;i++)
+                var domain_num;
+                if (domain_type != "all")
                 {
-                    domain_data = domain_data + data[i] + '\n'
-	            }
+                    for(var i=0;i<data.length;i++)
+                    {
+                        domain_data = domain_data + data[i] + '\n'
+    	            }
+                    return "<a title='"+domain_data+"' href=''>"+data.length+"</a>";
+                }
+                else {
+                    domain_num = data[0].length + data[1].length;
+                    domain_data = "赌博： " + data[0].length + "\n" + "色情: " + data[1].length + "\n";
+                    return "<a title='"+domain_data+"' href=''>"+domain_num+"</a>";
+                }
 
-                return "<a title='"+domain_data+"' href=''>"+data.length+"</a>";
 
                 }
             },
@@ -99,7 +108,41 @@ $(document).ready(function(){
     }
 
 
+    var domain_type="Gamble"; //默认显示赌博类域名数据
 
+    $.ajax({
+       type:"post",
+       url:"/ip_net_sector",
+       data:{'domain_type':domain_type},
+       cache:false,
+       success:function(data1){
+           data_deal(data1,domain_type);
+       },
+       error:function(){
+           alert("error!");
+       },
+   });
+
+
+    $('#bili').change(function(){
+    domain_type = $("#bili").find("option:selected").val();
+
+    $.ajax({
+       type:"post",
+       url:"/ip_net_sector",
+       data:{'domain_type':domain_type},
+       cache:false,
+       success:function(data1){
+           data_deal(data1,domain_type);
+       },
+       error:function(){
+           alert("error!");
+       },
+   });
+
+    });
+
+    /*
     $.ajax({
        type:"get",
        url:"/ip_net_sector_off",
@@ -112,6 +155,6 @@ $(document).ready(function(){
            alert("error!");
        },
    });
-
+   */
 
 });
