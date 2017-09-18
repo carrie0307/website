@@ -282,18 +282,21 @@ def general_ip_sector(dm_type):
     return return_data
 
 
+# 每个ip提供服务的域名数量统计 ip_domain_num.html
 def general_ip_domain(dm_type):
     '''
     ip提供服务域名数量统计
     '''
     global collection
     global ip_dealer
-    res = collection.find({'dm_type':dm_type})
+    if dm_type != 'all':
+        res = collection.find({'dm_type':dm_type})
+    else:
+        res = collection.find()
     ips = []
     ip_dict= {} # 以ip为key，内容为域名的列表
     for item in res:
         for each_visit in item['dm_ip']:
-            # ips.extend(each_visit['ips'])
             for index, ip in enumerate(each_visit['ips']):
                 # 获取地理位置
                 geo = each_visit['geos'][index] #当前ip地理位置
@@ -301,15 +304,27 @@ def general_ip_domain(dm_type):
                 for key in ['country', 'region', 'city']:
                     if geo[key] != '0':
                         this_geo = this_geo + geo[key] + '-'
-                if ip not in ip_dict.keys(): # 第一次处理到这个ip
-                    ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [item['domain']], 'category': ip_dealer.judge_category(ip)}
-                else:
-                    if item['domain'] not in ip_dict[ip]['domains']:
-                        ip_dict[ip]['domains'].append(item['domain'])
+                if dm_type != 'all':
+                    if ip not in ip_dict.keys(): # 第一次处理到这个ip
+                        ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [item['domain']], 'category': ip_dealer.judge_category(ip)}
+                    else:
+                        if item['domain'] not in ip_dict[ip]['domains']:
+                            ip_dict[ip]['domains'].append(item['domain'])
+                else:# 全部域名的情况
+                    if ip not in ip_dict.keys():
+                        ip_dict[ip] = {'ip': ip, 'geo': this_geo[:-1], 'domains': [0,0], 'category': ip_dealer.judge_category(ip)}
+                    if item['dm_type'] == 'Gamble':
+                        ip_dict[ip]['domains'][0] +=1
+                    else:
+                        ip_dict[ip]['domains'][1] +=1
     return_data = {}
-    dic= sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True)
-    return_data['data'] = [item[1] for item in dic]
-    # return_data['data'] = ip_dict.values()
+    # 按照提供服务域名总量排序
+    if dm_type != 'all':
+        dic= sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True)
+        return_data['data'] = [item[1] for item in dic]
+    else:
+        dic= sorted(ip_dict.iteritems(), key=lambda d:d[1]['domains'][0] + d[1]['domains'][1], reverse = True) # 按照提供服务域名总量排序
+        return_data['data'] = [item[1] for item in dic]
     return return_data
 
 
@@ -324,4 +339,5 @@ if __name__ == '__main__':
     # print ip_num_percent()
     # print ip_net_sector('www.www-4s.cc')
     # general_ip_sector('Gamble')
-    general_ip_domain('Gamble')
+    # print general_ip_domain('Porno')
+    pass
