@@ -360,6 +360,46 @@ def general_ip_domain(dm_type):
     return return_data
 
 
+
+def special_ip_count(dm_type):
+    global collection
+    global ip_dealer
+    if dm_type != 'all':
+        res = collection.find({'dm_type':dm_type})
+    else:
+        res = collection.find()
+    ips = []
+    ip_dict = {}
+    for item in res:
+        for each_visit in item['dm_ip']:
+            for ip in each_visit['ips']:
+                category = ip_dealer.special_ip_category(ip)
+                if category != 'A' and category != 'B' and category != 'C':
+                    if ip not in ip_dict.keys():
+                        if dm_type != 'all':
+                            ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': item['dm_type']}
+                        else: # 如果是整体的，则对Gamble，Prono进行计数
+                            if item['dm_type'] == 'Gamble':
+                                ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': [1,0]}
+                            else:
+                                ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': [0,1]}
+                    else:
+                        if item['domain'] not in ip_dict[ip]['domains']: # 防止一个ip为多个域名多次服务时重复统计域名的情况
+                            ip_dict[ip]['domains'].append(item['domain'])
+                            if dm_type == 'all':
+                                if item['dm_type'] == 'Gamble':
+                                    ip_dict[ip]['dm_type'][0] += 1
+                                else:
+                                    ip_dict[ip]['dm_type'][1] += 1
+    ip_dict = sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True) # 根据提供服务域名的数量排序
+    return_data = {}
+    return_data['data'] = [item[1] for item in ip_dict]
+    return return_data
+
+
+
+
+
 if __name__ == '__main__':
     # print change_frequency()
     # print ip_change('www.www-4s.cc')
@@ -370,6 +410,7 @@ if __name__ == '__main__':
     # print ip_change_situation('www.511789.com')
     # print ip_num_percent()
     # print ip_net_sector('www.www-4s.cc')
-    general_ip_sector('all')
+    # general_ip_sector('all')
     # general_ip_sector('Gamble')
     # general_ip_domain('Porno')
+    special_ip_count('all')

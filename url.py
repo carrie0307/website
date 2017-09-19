@@ -29,6 +29,8 @@ from handlers.ip_net_sector_off import ipNetSector_OffHandler
 from handlers.ip_domain_num import ipDomain_Handler
 from handlers.ip_domain_num_off import ipDomain_OffHandler
 
+from handlers.special_ip import SepcialIP_Handler
+
 
 url = [
     (r'/', IndexHandler),
@@ -44,6 +46,6 @@ url = [
     (r'/ip_net_sector',ipNetSector_Handler),
     (r'/ip_net_sector_off',ipNetSector_OffHandler),
     (r'/ip_domain_num',ipDomain_Handler),
-    (r'/ip_domain_num_off',ipDomain_OffHandler)
-
+    (r'/ip_domain_num_off',ipDomain_OffHandler),
+    (r'/special_ip',SepcialIP_Handler)
 ]

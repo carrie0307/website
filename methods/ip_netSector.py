@@ -3,8 +3,21 @@
     这里只讨论A、B和C类的网络段
 
     A类地址：1.0.0.1～126.255.255.254    子网掩码：255.0.0.0
+        特殊ip：
+            0.0.0.0 保留ip
+            10.X.X.X 私有地址
+            127.X.X.X 保留地址
+
     B类地址：128.0.0.1～191.255.255.254  子网掩码：255.255.0.0
-    C类地址：192.168.0.0～192.168.255.255    子网掩码：255.255.255.0
+        特殊ip：172.16.0.0---172.31.255.255是私有地址
+               169.254.X.X是保留地址
+               191.255.255.255是广播地址
+
+    C类地址：192.0.0.0---223.255.255.0    子网掩码：255.255.255.0
+        特殊ip：192.168.X.X是私有地址  192.168.0.0---192.168.255.255
+
+    D类地址：224.0.0.0～239.255.255.255
+    E类地址：240.0.0.0---255.255.255.254
 '''
 
 
@@ -16,14 +29,53 @@ masks = {
 
 
 class ip_category():
+
+    def special_ip_category(self,ip):
+        '''
+        包含特殊类型判别的ip判断
+        '''
+        ip_flag = map(eval, ip.split('.'))
+        if 224 <= ip_flag[0] <= 239:
+            return 'D'
+        elif 240 <= ip_flag[0] <= 255:
+            return 'E'
+        elif ip_flag[0] == 127 or ip_flag[0] == 0:
+            return 'A类保留'
+        elif ip_flag[0] == 10:
+            return 'A类私有'
+        elif ip_flag[0] == 172 and ip_flag[1] >= 16 and ip_flag[1] <= 31:
+            return 'B类私有'
+        elif ip_flag[0] == 169 and ip_flag[2] == 154:
+            return 'B类保留'
+        elif ip == '191.255.255.255':
+            return 'B类广播'
+        elif ip_flag[0] == 192 and ip_flag[1] == 168:
+            return 'C类私有'
+        elif 1 <= ip_flag[0] <= 126:
+            return 'A'
+        elif 128 <= ip_flag[0] <= 191:
+            return 'B'
+        elif 192 <= ip_flag[0] <= 223:
+            return 'C'
+        else:
+            return 'other'
+
+
     def judge_category(self, ip):
+        '''
+        ip地址类型判断（为了方便后续处理，这里不对私有和保留ip进行处理）
+        '''
         ip_flag = int(ip.split('.')[0])
         if 1 <= ip_flag <= 126:
             return 'A'
         elif 128 <= ip_flag <= 191:
             return 'B'
-        elif ip_flag == 192:
+        elif 192 <= ip_flag <= 223:
             return 'C'
+        elif 224 <= ip_flag <= 239:
+            return 'D'
+        elif 240 <= ip_flag <= 255:
+            return 'E'
         else:
             return 'other'
 
@@ -64,10 +116,11 @@ class ip_category():
                 ip_category[category] = [ip]
         sector_dict = {'A':{}, 'B':{}, 'C':{}}
         for category in ip_category.keys():
-            if category != 'other': # 只对A，B，C三类进行子网判断
+            if category != 'D' and category != 'E' and category != 'other': # 只对A，B，C三类进行子网判断
                 for ip in ip_category[category]:
                     ip_num = self.ipToBinary(ip)
                     ip_num = int(ip_num, 2)
+                    print ip
                     mask_num = int(masks[category], 2)
                     res = ip_num & mask_num
                     if res in sector_dict[category].keys():
@@ -78,10 +131,6 @@ class ip_category():
             for res in sector_dict[key]:
                 return_data.append({'category': key, 'ips': sector_dict[key][res]})
         return return_data
-
-
-
-
 
 
 if __name__ == '__main__':
