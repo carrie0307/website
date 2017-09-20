@@ -366,51 +366,6 @@ def domain_ip_sector_num():
     return return_data
 
 
-# 域名网段数量统计 -- 赌博色情双柱状
-def general_domain_ip_sector():
-
-    # 数量粒度[0, 1, 2, 3~5, 6~10, 11~15, 16~20, 21~25, 25+]
-    def single_type(dm_type):
-        res = collection.find({'dm_type':dm_type})
-        domains_num = res.count()
-        sectors_num_dict = {} # 网段数量统计字典
-        num_info = [0] * 9 # 根据数量粒度的个数，初始化数量为0
-        for item in res:
-            ips = [] # 每个域名一个ip列表集合
-            for each_visit in item['dm_ip']:
-                ips.extend(each_visit['ips'])
-                ips = list(set(ips))
-            ip_sector_info = ip_dealer.judge_Sector(ips)
-            sectors_num = len(ip_sector_info) # 网段数量
-            if sectors_num <= 2:
-                num_info[sectors_num] += 1
-            elif 3 <= sectors_num <= 5:
-                num_info[3] += 1
-            elif 6 <= sectors_num <= 10:
-                num_info[4] += 1
-            elif 11 <= sectors_num <= 15:
-                num_info[5] += 1
-            elif 16 <= sectors_num <= 20:
-                num_info[6] += 1
-            elif 21 <= sectors_num <= 25:
-                num_info[7] += 1
-            else:
-                num_info[8] += 1
-        for i in range(len(num_info)):
-            num_info[i] = round((num_info[i] / domains_num) * 100, 2)
-        return num_info
-
-    return_data['Gamble'] = single_type('Gamble')
-    return_data['Porno'] = single_type('Porno')
-    return return_data
-
-
-
-
-
-
-
-
 # 每个ip提供服务的域名数量统计 ip_domain_num.html
 def general_ip_domain(dm_type):
     '''

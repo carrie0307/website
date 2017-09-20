@@ -88,7 +88,7 @@ $(document).ready(function(){
     xAxis : [
         {
             type : 'category',
-            data: ['0', '1', '2', '3~5', '6~10', '11~15', '16~20', '21~25', '25+'],
+            data: ['0', '1', '2', '3~5', '6~10', '11~15', '16~20', '21~25', '大于25 '],
             axisLabel : {
                formatter: '{value} 个 网段'
            }
