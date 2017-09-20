@@ -120,7 +120,6 @@ class ip_category():
                 for ip in ip_category[category]:
                     ip_num = self.ipToBinary(ip)
                     ip_num = int(ip_num, 2)
-                    print ip
                     mask_num = int(masks[category], 2)
                     res = ip_num & mask_num
                     if res in sector_dict[category].keys():

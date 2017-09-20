@@ -312,6 +312,105 @@ def general_ip_sector(dm_type):
     return return_data
 
 
+# 单个域名ip所属网管数量统计 --  表格展示
+# 域名网段数量统计 -- 赌博色情双柱状图
+def domain_ip_sector_num():
+    global collection
+    global ip_dealer
+
+    # 数量粒度[0, 1, 2, 3~5, 6~10, 11~15, 16~20, 21~25, 25+]
+    def single_type(sectors_num_list, domains_num):
+        '''某网段数量域名占比统计'''
+        num_info = [0] * 9
+        for sectors_num in sectors_num_list:
+            if sectors_num <= 2:
+                num_info[sectors_num] += 1
+            elif 3 <= sectors_num <= 5:
+                num_info[3] += 1
+            elif 6 <= sectors_num <= 10:
+                num_info[4] += 1
+            elif 11 <= sectors_num <= 15:
+                num_info[5] += 1
+            elif 16 <= sectors_num <= 20:
+                num_info[6] += 1
+            elif 21 <= sectors_num <= 25:
+                num_info[7] += 1
+            else:
+                num_info[8] += 1
+        for i in range(len(num_info)):
+            num_info[i] = round((num_info[i] / domains_num) * 100, 2)
+        return num_info
+
+
+    return_data = {}
+    return_data['bar-data'] = {}
+    for dm_type in ['Gamble', 'Porno']:
+        res = collection.find({'dm_type':dm_type})
+        domains_num = res.count()
+        print domains_num
+        sectors_num_list = []
+        domain_ip_sector = {}
+        for item in res:
+            ips = [] # 每个域名一个ip列表集合
+            for each_visit in item['dm_ip']:
+                ips.extend(each_visit['ips'])
+                ips = list(set(ips))
+            ip_sector_info = ip_dealer.judge_Sector(ips)
+            sectors_num = len(ip_sector_info) # 网段数量
+            sectors_num_list.append(sectors_num)
+            if sectors_num > 1: # 对网段数量大于1的进行统计
+                domain_ip_sector[item['domain']] = {'domain': item['domain'], 'ips':ips,'sectors': sectors_num}
+        domain_ip_sector= sorted(domain_ip_sector.iteritems(), key=lambda d:d[1]['sectors'], reverse = True)
+        return_data[dm_type] = [item[1] for item in domain_ip_sector] # 统计表中显示的域名网段数量统计
+        return_data['bar-data'][dm_type] = single_type(sectors_num_list, domains_num)
+    return return_data
+
+
+# 域名网段数量统计 -- 赌博色情双柱状
+def general_domain_ip_sector():
+
+    # 数量粒度[0, 1, 2, 3~5, 6~10, 11~15, 16~20, 21~25, 25+]
+    def single_type(dm_type):
+        res = collection.find({'dm_type':dm_type})
+        domains_num = res.count()
+        sectors_num_dict = {} # 网段数量统计字典
+        num_info = [0] * 9 # 根据数量粒度的个数，初始化数量为0
+        for item in res:
+            ips = [] # 每个域名一个ip列表集合
+            for each_visit in item['dm_ip']:
+                ips.extend(each_visit['ips'])
+                ips = list(set(ips))
+            ip_sector_info = ip_dealer.judge_Sector(ips)
+            sectors_num = len(ip_sector_info) # 网段数量
+            if sectors_num <= 2:
+                num_info[sectors_num] += 1
+            elif 3 <= sectors_num <= 5:
+                num_info[3] += 1
+            elif 6 <= sectors_num <= 10:
+                num_info[4] += 1
+            elif 11 <= sectors_num <= 15:
+                num_info[5] += 1
+            elif 16 <= sectors_num <= 20:
+                num_info[6] += 1
+            elif 21 <= sectors_num <= 25:
+                num_info[7] += 1
+            else:
+                num_info[8] += 1
+        for i in range(len(num_info)):
+            num_info[i] = round((num_info[i] / domains_num) * 100, 2)
+        return num_info
+
+    return_data['Gamble'] = single_type('Gamble')
+    return_data['Porno'] = single_type('Porno')
+    return return_data
+
+
+
+
+
+
+
+
 # 每个ip提供服务的域名数量统计 ip_domain_num.html
 def general_ip_domain(dm_type):
     '''
@@ -360,7 +459,7 @@ def general_ip_domain(dm_type):
     return return_data
 
 
-
+# 特殊ip的统计 special.html
 def special_ip_count(dm_type):
     global collection
     global ip_dealer
@@ -378,7 +477,7 @@ def special_ip_count(dm_type):
                     if ip not in ip_dict.keys():
                         if dm_type != 'all':
                             ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': item['dm_type']}
-                        else: # 如果是整体的，则对Gamble，Prono进行计数
+                        else: # 如果是整体的，则对Gamble，Porno进行计数
                             if item['dm_type'] == 'Gamble':
                                 ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': [1,0]}
                             else:
@@ -400,6 +499,7 @@ def special_ip_count(dm_type):
 
 
 
+
 if __name__ == '__main__':
     # print change_frequency()
     # print ip_change('www.www-4s.cc')
@@ -413,4 +513,8 @@ if __name__ == '__main__':
     # general_ip_sector('all')
     # general_ip_sector('Gamble')
     # general_ip_domain('Porno')
-    special_ip_count('all')
+    # special_ip_count('all')
+    # single_ip_netSector('www.www-4s.cc')
+    # domain_ip_sector_num('Gamble')
+    # general_domain_ip_sector()
+    print domain_ip_sector_num()

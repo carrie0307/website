@@ -17,19 +17,21 @@ from handlers.iplive_off import iplive_OffHandler
 from handlers.ip_scatter import ipScatterHandler # 具体变动的散点图
 from handlers.ip_scatter_off import ipScatter_OffHandler # 具体每个域名的ip变化情况
 
-from handlers.ip_situation import ipSituationHandler
+from handlers.ip_situation import ipSituationHandler # 域名ip具体变化情况统计
 from handlers.ip_situation_off import ipSituation_OffHandler
 
-from handlers.ip_percent import ipPercent_Handler
+from handlers.ip_percent import ipPercent_Handler # 域名拥有ip数量的统计
 from handlers.ip_percent_off import ipPercent_OffHandler
 
-from handlers.ip_net_sector import ipNetSector_Handler
+from handlers.ip_net_sector import ipNetSector_Handler # ip整体的网段划分统计
 from handlers.ip_net_sector_off import ipNetSector_OffHandler
 
-from handlers.ip_domain_num import ipDomain_Handler
+from handlers.ip_domain_num import ipDomain_Handler # 每个ip提供服务域名数量统计
 from handlers.ip_domain_num_off import ipDomain_OffHandler
 
-from handlers.special_ip import SepcialIP_Handler
+from handlers.special_ip import SepcialIP_Handler # 特殊ip统计
+
+from handlers.domain_ipsector import domainIPsector_Handler # 每个域名ip的网段统计
 
 
 url = [
@@ -47,5 +49,7 @@ url = [
     (r'/ip_net_sector_off',ipNetSector_OffHandler),
     (r'/ip_domain_num',ipDomain_Handler),
     (r'/ip_domain_num_off',ipDomain_OffHandler),
-    (r'/special_ip',SepcialIP_Handler)
+    (r'/special_ip',SepcialIP_Handler),
+    (r'/domain_ip_sector',domainIPsector_Handler)
+
 ]
