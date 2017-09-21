@@ -489,6 +489,7 @@ def domain_oper_num():
     return_data['bar-data'] = {} # 柱状图数据
     for dm_type in ['Gamble', 'Porno']:
         res = collection.find({'dm_type':dm_type})
+        domains_num = res.count()
         oper_data = [] # 每个类型域名的字典列表 oper_data = [{'domain': 域名, 'opers':{}, 'ips':ip列表, 'dm_type': 域名类型}]
         oper_num_list = [0] * 8 #  运营商数量统计列表，分别[0, 1,2,3,4,5,6,6以上]
         for item in res:
@@ -512,6 +513,7 @@ def domain_oper_num():
             if len(temp_dict['opers']) > 1: # 统计运营商超过一个的域名
                 print '==='
                 oper_data.append(temp_dict)
+        oper_num_list = [(round((num / domains_num) * 100, 2)) for num in oper_num_list]
         return_data['bar-data'][dm_type] = oper_num_list
         oper_data = sorted(oper_data, key=operator.itemgetter('num'), reverse = True) # 根据运营商数量排序
         return_data[dm_type] = oper_data
