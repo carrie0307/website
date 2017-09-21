@@ -480,6 +480,48 @@ def special_geo():
     return return_data
 
 
+# 单个域名ip所属运营商--  表格展示
+# 域名运营商数量统计 -- 赌博色情双柱状图
+def domain_oper_num():
+    global collection
+    global ip_dealer
+    return_data = {}
+    return_data['bar-data'] = {} # 柱状图数据
+    for dm_type in ['Gamble', 'Porno']:
+        res = collection.find({'dm_type':dm_type})
+        oper_data = [] # 每个类型域名的字典列表 oper_data = [{'domain': 域名, 'opers':{}, 'ips':ip列表, 'dm_type': 域名类型}]
+        oper_num_list = [0] * 8 #  运营商数量统计列表，分别[0, 1,2,3,4,5,6,6以上]
+        for item in res:
+            temp_dict = {'domain': item['domain'], 'opers':{}, 'ips':[]}
+            # 'opers':{} 为每个运营商建立字典，{'oper1':[ip1,ip2, ...], 'oper2':[ip1,ip2, ...]}
+            for each_visit in item['dm_ip']:
+                for index, oper_info in enumerate(each_visit['geos']):
+                    if oper_info['oper'] not in temp_dict['opers'].keys():
+                        temp_dict['opers'][oper_info['oper']] = [each_visit['ips'][index]] # 为该运营商建立ip列表
+                        temp_dict['ips'].append(each_visit['ips'][index])
+                    else:
+                        if each_visit['ips'][index] not in temp_dict['opers'][oper_info['oper']]: # 避免同一运营商的ip重复
+                            temp_dict['opers'][oper_info['oper']].append(each_visit['ips'][index])
+                            temp_dict['ips'].append(each_visit['ips'][index])
+            oper_num = len(temp_dict['opers']) # 当前域名运营商数量
+            temp_dict['num'] = oper_num # 记录运营商数量，便于后面排序
+            if oper_num <= 6: # 运营商数量统计
+                oper_num_list[oper_num] += 1
+            else:
+                oper_num_list[7] += 1
+            if len(temp_dict['opers']) > 1: # 统计运营商超过一个的域名
+                print '==='
+                oper_data.append(temp_dict)
+        return_data['bar-data'][dm_type] = oper_num_list
+        oper_data = sorted(oper_data, key=operator.itemgetter('num'), reverse = True) # 根据运营商数量排序
+        return_data[dm_type] = oper_data
+    return return_data
+
+
+
+
+
+
 
 if __name__ == '__main__':
     # print change_frequency()
@@ -499,4 +541,6 @@ if __name__ == '__main__':
     # domain_ip_sector_num('Gamble')
     # general_domain_ip_sector()
     # print domain_ip_sector_num()
-    special_geo()
+    # special_geo()
+    # print domain_oper_num()
+    print domain_oper_num()
