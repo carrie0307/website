@@ -50,6 +50,6 @@ url = [
     (r'/ip_domain_num',ipDomain_Handler),
     (r'/ip_domain_num_off',ipDomain_OffHandler),
     (r'/special_ip',SepcialIP_Handler),
-    (r'/domain_ip_sector',domainIPsector_Handler)
+    (r'/domain_ip_sector',domainIPsector_Handler),
 
 ]

@@ -3,7 +3,7 @@ $(document).ready(function(){
     function data_deal(data1, domain_type)
     {
         dataSet = data1['data'];
-        //dataSet=data1['row']; //这里其实是列表了
+
         var t = $('#special-ip-table').DataTable({
             destroy: true,
             searching: false,
@@ -21,7 +21,7 @@ $(document).ready(function(){
                 "data": "ip"
             },
             {
-                "data": "category"
+                "data": "special_item" //ip地址的类型（ip类型异常统计） 或 ip地理位置（ip地理位置异常统计）
             },
             {
                 "data": "domains"
@@ -104,6 +104,10 @@ $(document).ready(function(){
 
     $('#bili').change(function(){
     domain_type = $("#bili").find("option:selected").val();
+    if(domain_type == "geo"){
+        // 修改表头内容
+        document.getElementById("special_item").innerHTML = "地理位置异常";
+    }
 
     $.ajax({
        type:"post",
@@ -118,23 +122,8 @@ $(document).ready(function(){
        },
    });
 
+
     });
 
-
-
-
-    /*
-    $.ajax({
-       type:"get",
-       url:"/ip_domain_num_off",
-       cache:false,
-       success:function(data1){
-           data_deal(data1);
-       },
-       error:function(){
-           alert("error!");
-       },
-   });
-   */
 
 });

@@ -42,7 +42,7 @@ def change_frequency():
             visit_times = 1
         frequency = change_times / visit_times
         frequency = round(frequency,2)
-        return_data['rows'].append({'domain':str(item['domain']), 'change_times' : str(change_times),  'visit_times': str(visit_times), 'frequency': str(frequency)})
+        return_data['rows'].append({'domain':str(item['domain']), 'change_times' : str(change_times),  'visit_times': int(visit_times), 'frequency': str(frequency)})
     # return_data['rows'] = sorted(return_data['rows'], key=operator.itemgetter('change_times'), reverse = True)
     return return_data
 
@@ -430,13 +430,13 @@ def special_ip_count(dm_type):
                 category = ip_dealer.special_ip_category(ip)
                 if category != 'A' and category != 'B' and category != 'C':
                     if ip not in ip_dict.keys():
-                        if dm_type != 'all':
-                            ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': item['dm_type']}
+                        if dm_type != 'all': # special_item表示特殊的ip地址类型
+                            ip_dict[ip] = {'ip': ip, 'special_item': category, 'domains':[item['domain']], 'dm_type': item['dm_type']}
                         else: # 如果是整体的，则对Gamble，Porno进行计数
                             if item['dm_type'] == 'Gamble':
-                                ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': [1,0]}
+                                ip_dict[ip] = {'ip': ip, 'special_item': category, 'domains':[item['domain']], 'dm_type': [1,0]}
                             else:
-                                ip_dict[ip] = {'ip': ip, 'category': category, 'domains':[item['domain']], 'dm_type': [0,1]}
+                                ip_dict[ip] = {'ip': ip, 'special_item': category, 'domains':[item['domain']], 'dm_type': [0,1]}
                     else:
                         if item['domain'] not in ip_dict[ip]['domains']: # 防止一个ip为多个域名多次服务时重复统计域名的情况
                             ip_dict[ip]['domains'].append(item['domain'])
@@ -450,8 +450,34 @@ def special_ip_count(dm_type):
     return_data['data'] = [item[1] for item in ip_dict]
     return return_data
 
-
-
+# 统计地理位置为“未分配或内网ip”的ip与服务的域名
+def special_geo():
+    global collection
+    global ip_dealer
+    ip_dict = {}
+    res = collection.find()
+    for item in res:
+        for each_visit in item['dm_ip']:
+            for index, ip in enumerate(each_visit['ips']):
+                # print each_visit['geos'][index]['country']
+                if each_visit['geos'][index]['country'] == u'未分配或者内网IP': #  要记录的特殊ip
+                    if ip not in ip_dict.keys(): # special_item表示特殊的地理位置
+                        ip_dict[ip] = {'ip':ip, 'special_item': '未分配或内网ip', 'domains': [item['domain']], 'dm_type': [0, 0]}
+                        if item['dm_type'] == 'Gamble': # 对该ip服务域名类型进行统计
+                            ip_dict[ip]['dm_type'][0] += 1
+                        else:
+                            ip_dict[ip]['dm_type'][1] += 1
+                    else:
+                        if item['domain'] not in ip_dict[ip]['domains']:
+                            ip_dict[ip]['domains'].append(item['domain'])
+                            if item['dm_type'] == 'Gamble': # 对该ip服务域名类型进行统计
+                                ip_dict[ip]['dm_type'][0] += 1
+                            else:
+                                ip_dict[ip]['dm_type'][1] += 1
+    ip_dict = sorted(ip_dict.iteritems(), key=lambda d:len(d[1]['domains']), reverse = True) # 根据提供服务域名的数量排序
+    return_data = {}
+    return_data['data'] = [item[1] for item in ip_dict]
+    return return_data
 
 
 
@@ -472,4 +498,5 @@ if __name__ == '__main__':
     # single_ip_netSector('www.www-4s.cc')
     # domain_ip_sector_num('Gamble')
     # general_domain_ip_sector()
-    print domain_ip_sector_num()
+    # print domain_ip_sector_num()
+    special_geo()
