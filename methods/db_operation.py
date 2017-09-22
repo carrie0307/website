@@ -491,7 +491,7 @@ def domain_oper_num():
         res = collection.find({'dm_type':dm_type})
         domains_num = res.count()
         oper_data = [] # 每个类型域名的字典列表 oper_data = [{'domain': 域名, 'opers':{}, 'ips':ip列表, 'dm_type': 域名类型}]
-        oper_num_list = [0] * 8 #  运营商数量统计列表，分别[0, 1,2,3,4,5,6,6以上]
+        oper_num_list = [0] * 8 #  运营商数量统计列表，分别[0, 1,2,3,4,5,6,6以上], 用于柱状图
         for item in res:
             temp_dict = {'domain': item['domain'], 'opers':{}, 'ips':[]}
             # 'opers':{} 为每个运营商建立字典，{'oper1':[ip1,ip2, ...], 'oper2':[ip1,ip2, ...]}
@@ -520,6 +520,62 @@ def domain_oper_num():
     return return_data
 
 
+#  统计地理位置、网段、运营商数量大于1的域名
+def special_domain():
+    global collection
+    global ip_dealer
+    return_data = {}
+    i = 0
+    for dm_type in ['Gamble', 'Porno']:
+        res = collection.find({'dm_type':dm_type})
+        data_info = []
+        for item in res:
+            ips = []
+            temp_dict = {'domain': item['domain'], 'opers':{}, 'geos':{}, 'sectors':0, 'ips':[]}
+            for each_visit in item['dm_ip']:
+                # 获取当前域名ip
+                ips.extend(each_visit['ips'])
+                ips = list(set(ips))
+                for index, ip in enumerate(each_visit['ips']):
+                    # 读取运营商
+                    oper = each_visit['geos'][index]['oper'] # 获取运营商名称
+                    # 计算每个运营商服务ip的数量
+                    if oper not in temp_dict['opers'].keys():
+                        temp_dict['opers'][oper] = [ip]
+                    else:
+                        if ip not in temp_dict['opers'][oper]:
+                            temp_dict['opers'][oper].append(ip)
+                     # 读取地理位置信息
+                    geo = ''
+                    for key in ['country', 'region', 'city']:
+                        if each_visit['geos'][index][key]!= '0':
+                            geo = geo + each_visit['geos'][index][key] + '-'
+                    geo = geo[:-1] # 获取到地理位置
+                    if geo not in temp_dict['geos'].keys():
+                        temp_dict['geos'][geo] = [ip]
+                    else:
+                        if ip not in temp_dict['opers'][oper]:
+                            temp_dict['geos'][oper].append(ip)
+            # 计算网段
+            if ips != []:
+                ip_sector_info = ip_dealer.judge_Sector(ips)
+                sectors_num = len(ip_sector_info) # 网段数量
+                temp_dict['sectors'] = sectors_num
+                temp_dict['ips'] = ips
+                temp_dict['ips_num'] = len(ips)
+                if len(temp_dict['geos']) > 1 or len(temp_dict['opers']) > 1 or sectors_num > 1:
+                    data_info.append(temp_dict)
+        data_info = sorted(data_info, key=operator.itemgetter('ips_num'), reverse = True) # 根据运营商数量排序
+        return_data[dm_type] = data_info
+    return return_data
+
+
+
+
+
+
+
+
 
 
 
@@ -545,4 +601,5 @@ if __name__ == '__main__':
     # print domain_ip_sector_num()
     # special_geo()
     # print domain_oper_num()
-    print domain_oper_num()
+    # print domain_oper_num()
+    print special_domain()

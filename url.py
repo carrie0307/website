@@ -33,7 +33,9 @@ from handlers.special_ip import SepcialIP_Handler # 特殊ip统计
 
 from handlers.domain_ipsector import domainIPsector_Handler # 每个域名ip的网段统计
 
-from handlers.domain_oper import domain_Oper_Handler
+from handlers.domain_oper import domain_Oper_Handler # 运营商数量大于1的域名统计
+
+from handlers.special_domain import Specialdomain_Handler # 网段、地理位置、运营商数量大于1的域名统计
 
 url = [
     (r'/', IndexHandler),
@@ -52,6 +54,7 @@ url = [
     (r'/ip_domain_num_off',ipDomain_OffHandler),
     (r'/special_ip',SepcialIP_Handler),
     (r'/domain_ip_sector',domainIPsector_Handler),
-    (r'/domain_oper',domain_Oper_Handler)
+    (r'/domain_oper',domain_Oper_Handler),
+    (r'/special_domain', Specialdomain_Handler)
 
 ]
