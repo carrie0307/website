@@ -8,7 +8,7 @@ $(document).ready(function(){
             destroy: true,
             searching: false,
             //每页显示n条数据
-            pageLength: 10,
+            pageLength: 20,
             //data: dataSet,
             data:dataSet,
             columns: [{

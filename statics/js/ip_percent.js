@@ -48,8 +48,6 @@ $(document).ready(function(){
             name:'赌博类',
             type:'bar',
             data:[],
-
-
         },
         {
             name:'色情类',

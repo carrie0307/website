@@ -36,7 +36,7 @@ var option = {
             scale:true,
             data:[],
             axisLabel:{
-                interval:1,
+                interval:2,
                 rotate:20,//旋转角度，为0表示水平
             }
         }
@@ -66,7 +66,7 @@ function deal_data(real_data)
     var Series = []; // 每次图中实际的数据，{name：当次insert_time， type：catter，data： [当次insert_time对应的所有ip记录]}
     var dates = []; // 每组（一张图）中的30个insert_time
     var i,j;
-    var k = 30; //每30次的数据作为一组
+    var k = 50; //每30次的数据作为一组
     var div; // 每次新建的div
     var mychart; // 每次echart初始化的变量
     var cell = document.getElementById("main_content"); // 所有的div都创建到id为main_content的div下
@@ -95,12 +95,10 @@ function deal_data(real_data)
         mychart.setOption(option);
 
         i = k;
-        k = k + 30; //每30次的数据作为一组
+        k = k + 50; //每30次的数据作为一组
 
 
     }
-
-
 }
 
 
@@ -112,7 +110,6 @@ $.ajax({
     cache:false,
     success:function(data1){
 
-        //alert("success");
         deal_data(data1);
 
     },
