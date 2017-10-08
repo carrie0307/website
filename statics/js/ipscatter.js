@@ -1,4 +1,3 @@
-var myChart = echarts.init(document.getElementById('ip-scatter'));
 // 指定图表的配置项和数据
 var option = {
     title : {
@@ -37,7 +36,7 @@ var option = {
             scale:true,
             data:[],
             axisLabel:{
-                interval:'auto',
+                interval:1,
                 rotate:20,//旋转角度，为0表示水平
             }
         }
@@ -48,62 +47,62 @@ var option = {
             scale:true,
             data:[],
             axisLabel : {
-                //formatter: '{value} kg'
                 interval:3,
             }
         }
     ],
-    series : []
+    series : [],
 
 };
-myChart.setOption(option);// 初次加载图表(无数据)
+//myChart.setOption(option);// 初次加载图表(无数据)
 
 
-function deal_data(data1)
+function deal_data(real_data)
 {
-    real_data = data1["rows"];
-    var category_name = new Array(); //以每次访问时间作为x轴的category
-    var ini_ip_array = new Array(); // 原始的IP列表
-    var ip_array = new Array(); // 去重后的IP列表,作为Axis
-
-    var j=0;
-    var i = 0;
-
-    var real_series=[];
-    var xy=[]; //每次访问日期下实际对应的x.y轴数据
-
-    for(value in real_data)
+    /*
+        由于数据较多，因此在这里以30次变化的数据作为一组，绘制在一张图内;
+        每次动态创建一个div，绘制新的散点图
+    */
+    var Series = []; // 每次图中实际的数据，{name：当次insert_time， type：catter，data： [当次insert_time对应的所有ip记录]}
+    var dates = []; // 每组（一张图）中的30个insert_time
+    var i,j;
+    var k = 30; //每30次的数据作为一组
+    var div; // 每次新建的div
+    var mychart; // 每次echart初始化的变量
+    var cell = document.getElementById("main_content"); // 所有的div都创建到id为main_content的div下
+    for(i=0;i<real_data['date'].length;) //对所有的insert_time遍历
     {
-        for(i=0;i<real_data[value].length;i++)
+
+        div = document.createElement("div"); // 创建新的div
+        div.id = "div" + i;
+        div.style.cssText="width:1500px;height:400px; margin-top:50px;" //设置css内容
+        cell.appendChild(div);
+        mychart = echarts.init(document.getElementById(div.id)); //echart初始化
+
+
+        dates =real_data['date'].slice(i,k); //截取30个insert_time为一组
+        Series = [];
+
+        for(j=0;j<dates.length;j++)
         {
-            xy.push([value,real_data[value][i]]);//实际的数据，x轴是日期，y周是ip
+            //real_data['data'][dates[j]]： 该insert_time对应的所有ip的列表
+            Series.push({name:dates[j], type:'scatter',data:real_data['data'][dates[j]]});
         }
-        real_series.push({name:value, type:'scatter',data:xy});
-        xy=[];
 
-        category_name[j]=value; //获取访问日期列表
-        ini_ip_array.push.apply(ini_ip_array, real_data[value]); //获取原始ip列表
-        j = j + 1;
-    }
-    category_name=category_name.sort();//按照时间进行排序
+        option.xAxis[0].data=dates;
+        option.yAxis[0].data=real_data['ips']; //纵轴ip始终时所有ip
+        option.series=Series;
+        mychart.setOption(option);
 
+        i = k;
+        k = k + 30; //每30次的数据作为一组
 
-    //对ip进行去重，得到ip_array
-    for(i=0;i<ini_ip_array.length;i++)
-    {
-        if (ip_array.indexOf(ini_ip_array[i]) == -1){
-            ip_array.push(ini_ip_array[i]);
-        }
 
     }
 
 
-    option.xAxis[0].data=category_name;
-    option.yAxis[0].data=ip_array;
-    option.series=real_series;
-
-    myChart.setOption(option);
 }
+
 
 
 // 使用刚指定的配置项和数据显示图表。

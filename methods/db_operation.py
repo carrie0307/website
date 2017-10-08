@@ -59,11 +59,18 @@ def change_frequency():
 def ip_change(domain):
     global collection
     return_data = {}
-    return_data['rows'] = {}
+    return_data['data'] = {}
+    return_data['ips'] = []
+    return_data['date'] = []
     item = collection.find_one({'domain':domain})
     for each_visit_res in item['dm_ip']:
-        return_data['rows'][each_visit_res['insert_time']] = each_visit_res['ips']
-    return_data['total'] = len(item['dm_ip'])
+        return_data['ips'].extend(each_visit_res['ips'])
+        return_data['date'].append(each_visit_res['insert_time'])
+        for ip in each_visit_res['ips']:
+            return_data['data'].setdefault(each_visit_res['insert_time'], []).append([each_visit_res['insert_time'],ip]) # 默认设置为[]，存在列表则添加元素
+            # return_data['data'].append([each_visit_res['insert_time'],ip])
+        # return_data['rows'][each_visit_res['insert_time']] = each_visit_res['ips']
+    return_data['ips']= list(set(return_data['ips']))
     return return_data
 
 
@@ -685,7 +692,7 @@ def domain_geo_num():
 
 if __name__ == '__main__':
     # print change_frequency()
-    # print ip_change('www.www-4s.cc')
+    ip_change('www.www-4s.cc')
     # www-4s.cc
     # 7777744444.com
     # live_period('www.www-4s.cc')
@@ -705,4 +712,4 @@ if __name__ == '__main__':
     # print domain_oper_num()
     # print domain_oper_num()
     # print special_domain()
-    province_count()
+    # province_count()
