@@ -1,0 +1,58 @@
+for item in res:
+            for each_visit in item['dm_ip']:
+                ips.extend(each_visit['ips'])
+                ips = list(set(ips))
+                for index, ip in enumerate(each_visit['ips']):
+                    country = each_visit['geos'][index]['country']
+                    if country == '中国':
+                        region = str(each_visit['geos'][index]['region'][:2]) # 不包括“省”字 黑龙江--黑龙, 内蒙 --内蒙
+                        if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            region_domain[region][1].append(ip)
+                            region_domain[region][0]['value'] += 1
+                    elif country == '香港' or country == '澳门' or country == '台湾':
+                        region = str(country)
+                        if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            region_domain[region][1].append(ip)
+                            region_domain[region][0]['value'] += 1
+                    else:
+                        print country
+                        num += 1
+
+
+
+res = collection.find({'dm_type':'Gamble'})
+    region_domain = {'天津': [{'name':'天津','value':0},[]], '上海': [{'name':'上海','value':0},[]], '重庆': [{'name':'重庆','value':0}, []], '北京': [{'name':'北京','value':0}, []],
+                '河北': [{'name':'河北','value':0}, []], '河南': [{'name':'河南','value':0}, []], '云南': [{'name':'云南','value':0}, []], '辽宁':[{'name':'辽宁','value':0}, []],
+                '黑龙': [{'name':'黑龙江','value':0},[]], '湖南': [{'name':'湖南','value':0}, []],'安徽': [{'name':'安徽','value':0}, []], '山东': [{'name':'山东','value':0}, []],
+                '新疆': [{'name':'新疆','value':0}, []], '江苏': [{'name':'江苏','value':0}, []],'浙江': [{'name':'浙江','value':0}, []], '江西': [{'name':'江西','value':0}, []],
+                '湖北': [{'name':'湖北','value':0}, []], '广西': [{'name':'广西','value':0}, []], '甘肃': [{'name':'甘肃','value':0}, []], '山西': [{'name':'山西','value':0}, []],
+                '内蒙': [{'name':'内蒙古','value':0}, []], '陕西': [{'name':'陕西','value':0}, []], '吉林': [{'name':'吉林','value':0}, []], '福建': [{'name':'福建','value':0}, []],
+                '贵州': [{'name':'贵州','value':0}, []], '广东': [{'name':'广东','value':0}, []],'青海': [{'name':'青海','value':0}, []], '西藏': [{'name':'西藏','value':0}, []],
+                '四川': [{'name':'四川','value':0}, []], '宁夏': [{'name':'宁夏','value':0}, []], '海南': [{'name':'海南','value':0}, []], '台湾': [{'name':'台湾','value':0}, []],
+                '香港': [{'name':'香港','value':0}, []], '澳门': [{'name':'澳门','value':0}, []], '0': [{'name':'0','value':0}, []]}
+    broad_domain = {}
+    df = pd.DataFrame(list(res))
+    ips = dict(df.loc[:,['dm_ip']]) # 对dm_ip的内容进行处理
+    for i in range(len(ips['dm_ip'])): # 第i个域名的记录
+        print i
+        for j in range(len(ips['dm_ip'][i])): # 第i条记录的第j次访问
+            for index,ip in enumerate(ips['dm_ip'][i][j]['ips']):
+                geo = get_geo(ips['dm_ip'][i][j]['geos'][index])
+                print geo
+                if geo not in region_domain.keys(): # 海外域名
+                    if geo not in broad_domain.keys():
+                        broad_domain[geo] = [ip]
+                    elif ip not in broad_domain[geo]:
+                        broad_domain[geo].append(ip)
+                else:
+                    if ip not in region_domain[geo][1]:
+                        region_domain[geo][1].append(ip)
+                        region_domain[geo][0]['value'] += 1
+
+def get_geo(geo_dict):
+        if geo_dict['country'] == '中国':
+            region = str(geo_dict['region'][:2]) # 不包括“省”字 黑龙江--黑龙, 内蒙 --内蒙
+        elif geo_dict['country'] == '香港' or geo_dict['country'] == '澳门' or geo_dict['country'] == '台湾':
+            region = str(geo_dict['country'])
+        else:
+            return geo_dict['country']

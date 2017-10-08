@@ -37,6 +37,8 @@ from handlers.domain_oper import domain_Oper_Handler # 运营商数量大于1的
 
 from handlers.special_domain import Specialdomain_Handler # 网段、地理位置、运营商数量大于1的域名统计
 
+from handlers.province_spread import Provincespread_Handler # 全国各省市非法域名数量分布
+
 url = [
     (r'/', IndexHandler),
     (r'/off', OffHandler),
@@ -55,6 +57,7 @@ url = [
     (r'/special_ip',SepcialIP_Handler),
     (r'/domain_ip_sector',domainIPsector_Handler),
     (r'/domain_oper',domain_Oper_Handler),
-    (r'/special_domain', Specialdomain_Handler)
+    (r'/special_domain', Specialdomain_Handler),
+    (r'/province_spread', Provincespread_Handler)
 
 ]

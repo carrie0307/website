@@ -4,7 +4,15 @@ from pymongo import *
 import operator
 import datetime
 import time
+import json
+from bson import ObjectId
+import pandas as pd
+import numpy as np
+from pandas import Series,DataFrame
 from ip_netSector import ip_category
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 '''建立连接'''
 client = MongoClient()
@@ -570,6 +578,100 @@ def special_domain():
     return return_data
 
 
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
+
+# www.aitingwang.com 中国，但其他省市未解析出来
+def province_count():
+    return_data = {}
+    return_data['Gamble'] = {'Home':[], 'Broad':{}}
+    return_data['Porno'] = {'Home':[], 'Broad':{}}
+    global collection
+    for dm_type in ['Gamble', 'Porno']:
+        res = collection.find({'dm_type':dm_type})
+        region_domain = {'天津': [{'name':'天津','value':0},[]], '上海': [{'name':'上海','value':0},[]], '重庆': [{'name':'重庆','value':0}, []], '北京': [{'name':'北京','value':0}, []],
+                    '河北': [{'name':'河北','value':0}, []], '河南': [{'name':'河南','value':0}, []], '云南': [{'name':'云南','value':0}, []], '辽宁':[{'name':'辽宁','value':0}, []],
+                    '黑龙': [{'name':'黑龙江','value':0},[]], '湖南': [{'name':'湖南','value':0}, []],'安徽': [{'name':'安徽','value':0}, []], '山东': [{'name':'山东','value':0}, []],
+                    '新疆': [{'name':'新疆','value':0}, []], '江苏': [{'name':'江苏','value':0}, []],'浙江': [{'name':'浙江','value':0}, []], '江西': [{'name':'江西','value':0}, []],
+                    '湖北': [{'name':'湖北','value':0}, []], '广西': [{'name':'广西','value':0}, []], '甘肃': [{'name':'甘肃','value':0}, []], '山西': [{'name':'山西','value':0}, []],
+                    '内蒙': [{'name':'内蒙古','value':0}, []], '陕西': [{'name':'陕西','value':0}, []], '吉林': [{'name':'吉林','value':0}, []], '福建': [{'name':'福建','value':0}, []],
+                    '贵州': [{'name':'贵州','value':0}, []], '广东': [{'name':'广东','value':0}, []],'青海': [{'name':'青海','value':0}, []], '西藏': [{'name':'西藏','value':0}, []],
+                    '四川': [{'name':'四川','value':0}, []], '宁夏': [{'name':'宁夏','value':0}, []], '海南': [{'name':'海南','value':0}, []], '台湾': [{'name':'台湾','value':0}, []],
+                    '香港': [{'name':'香港','value':0}, []], '澳门': [{'name':'澳门','value':0}, []], '0': [{'name':'0','value':0}, []]}
+        broad_domain = {}
+        for item in res:
+            for each_visit in item['dm_ip']:
+                for index, ip in enumerate(each_visit['ips']):
+                    country = each_visit['geos'][index]['country']
+                    if country == '中国':
+                        region = str(each_visit['geos'][index]['region'][:2]) # 不包括“省”字 黑龙江--黑龙, 内蒙 --内蒙
+                        if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            region_domain[region][1].append(ip)
+                            region_domain[region][0]['value'] += 1
+                    elif country == '香港' or country == '澳门' or country == '台湾':
+                        region = str(country)
+                        if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            region_domain[region][1].append(ip)
+                            region_domain[region][0]['value'] += 1
+                    else: # 海外域名
+                        if country not in broad_domain.keys():
+                            broad_domain[country] = {'country':country, 'ips':[ip]}
+                        else:
+                            if ip not in broad_domain[country]['ips']:
+                                broad_domain[country]['ips'].append(ip)
+        return_data[dm_type]['Home'] = [region_domain[item][0] for item in region_domain.keys()]
+        return_data[dm_type]['Broad'] = broad_domain.values()
+        return_data[dm_type]['Broad'] = sorted(return_data[dm_type]['Broad'], key=lambda para: len(para['ips']), reverse = True)
+    return return_data
+
+
+# 单个域名ip所属地理位置-  表格展示
+# 域名地理位置数量统计 -- 赌博色情双柱状图
+def domain_geo_num():
+    global collection
+    return_data = {}
+    return_data['bar-data'] = {} # 柱状图数据
+    for dm_type in ['Gamble', 'Porno']:
+        res = collection.find({'dm_type':dm_type})
+        domains_num = res.count()
+        oper_data = [] # 每个类型域名的字典列表 oper_data = [{'domain': 域名, 'opers':{}, 'ips':ip列表, 'dm_type': 域名类型}]
+        oper_num_list = [0] * 8 #  运营商数量统计列表，分别[0, 1,2,3,4,5,6,6以上], 用于柱状图
+        for item in res:
+            temp_dict = {'domain': item['domain'], 'opers':{}, 'ips':[]}
+            # 'opers':{} 为每个运营商建立字典，{'oper1':[ip1,ip2, ...], 'oper2':[ip1,ip2, ...]}
+            for each_visit in item['dm_ip']:
+                for index, oper_info in enumerate(each_visit['geos']):
+                    if oper_info['oper'] not in temp_dict['opers'].keys():
+                        temp_dict['opers'][oper_info['oper']] = [each_visit['ips'][index]] # 为该运营商建立ip列表
+                        temp_dict['ips'].append(each_visit['ips'][index])
+                    else:
+                        if each_visit['ips'][index] not in temp_dict['opers'][oper_info['oper']]: # 避免同一运营商的ip重复
+                            temp_dict['opers'][oper_info['oper']].append(each_visit['ips'][index])
+                            temp_dict['ips'].append(each_visit['ips'][index])
+            oper_num = len(temp_dict['opers']) # 当前域名运营商数量
+            temp_dict['num'] = oper_num # 记录运营商数量，便于后面排序
+            if oper_num <= 6: # 运营商数量统计
+                oper_num_list[oper_num] += 1
+            else:
+                oper_num_list[7] += 1
+            if len(temp_dict['opers']) > 1: # 统计运营商超过一个的域名
+                print '==='
+                oper_data.append(temp_dict)
+        oper_num_list = [(round((num / domains_num) * 100, 2)) for num in oper_num_list]
+        return_data['bar-data'][dm_type] = oper_num_list
+        oper_data = sorted(oper_data, key=operator.itemgetter('num'), reverse = True) # 根据运营商数量排序
+        return_data[dm_type] = oper_data
+    return return_data
+
+
+
+
+
+
 
 
 
@@ -602,4 +704,5 @@ if __name__ == '__main__':
     # special_geo()
     # print domain_oper_num()
     # print domain_oper_num()
-    print special_domain()
+    # print special_domain()
+    province_count()

@@ -41,7 +41,7 @@ $(document).ready(function(){
                 return "<a title='"+ip_data+"' href=''>"+data.length+"</a>";// 也可以不用a标签，用<span>
                 }
             },
-            {"targets": 3},
+            {"targets": 2},
         ],
 
         });
