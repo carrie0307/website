@@ -1,4 +1,38 @@
+/*
+function option_select(param){
+    alert(param);
+}
+*/
+var option_select;
+var test;
+
+
 $(document).ready(function(){
+
+
+    option_select=function(param){
+
+        $('#type-button').text = param;
+        var type_dict = {"Gamble":"赌博", "Porno":"色情", "all":"全部"}
+        document.getElementById("type-button").innerHTML=type_dict[param];
+
+        $.ajax({
+           type:"post",
+           url:"/ip_net_sector",
+           data:{'domain_type':param},
+           cache:false,
+           success:function(data1){
+               data_deal(data1,domain_type);
+           },
+           error:function(){
+               alert("error!");
+           },
+       });
+    }
+
+    test=function(){
+        alert('test!');
+    }
 
     function data_deal(data1, domain_type)
     {
@@ -124,37 +158,7 @@ $(document).ready(function(){
    });
 
 
-    $('#bili').change(function(){
-    domain_type = $("#bili").find("option:selected").val();
-
-    $.ajax({
-       type:"post",
-       url:"/ip_net_sector",
-       data:{'domain_type':domain_type},
-       cache:false,
-       success:function(data1){
-           data_deal(data1,domain_type);
-       },
-       error:function(){
-           alert("error!");
-       },
-   });
-
-    });
-
-    /*
-    $.ajax({
-       type:"get",
-       url:"/ip_net_sector_off",
-       cache:false,
-       success:function(data1){
-
-           data_deal(data1);
-       },
-       error:function(){
-           alert("error!");
-       },
-   });
-   */
-
 });
+
+option_select();
+test();

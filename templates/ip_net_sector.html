@@ -26,11 +26,49 @@
     <link href="{{static_url("css/iCheck/all.css")}}" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <!-- <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> -->
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
     <!-- Theme style -->
     <link href="{{static_url("css/style.css")}}" rel="stylesheet" type="text/css" />
 
     <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
+
+    <!-- jQuery 2.0.2 -->
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+   <script src="{{static_url("js/jquery.min.js")}}"></script>
+
+   <!-- jQuery UI 1.10.3 -->
+   <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
+   <!-- Bootstrap -->
+   <script src="{{static_url("js/bootstrap.min.js")}}"></script>
+   <!-- daterangepicker -->
+   <script src="{{static_url("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
+
+   <script src="{{static_url("js/plugins/chart.js")}}"></script>
+
+   <script src="{{static_url("js/plugins/iCheck/icheck.min.js")}}"></script>
+   <!-- calendar -->
+   <script src="{{static_url("js/plugins/fullcalendar/fullcalendar.js")}}"></script>
+
+   <!-- Director App -->
+   <script src="{{static_url("js/Director/app.js")}}"></script>
+
+   <!-- Director dashboard demo (This is only for demo purposes) -->
+   <script src="{{static_url("js/Director/dashboard.js")}}"></script>
+
+
+
+  <!-- DataTables CSS -->
+   <link rel="stylesheet" type="text/css" href="{{static_url("media/css/jquery.dataTables.css")}}">
+
+   <!-- jQuery -->
+   <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.js")}}"></script>
+
+   <!-- DataTables -->
+   <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.dataTables.js")}}"></script>
+
+
+  <!-- My JS -->
+<script src="{{static_url("js/ip_net_sector.js")}}"></script>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -371,13 +409,19 @@
                         <h3 class="panel-title">各网段ip统计</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="form-group" id="bili" style="width:80px;">
-        					<select class="form-control" id="select-content">
-        						<option value="Gamble">赌博</option>
-        						<option value="Porno">色情</option>
-        						<option value="all">全部</option>
-        					</select>
-        				</div>
+                    <div class="btn-group">
+
+                    	<button id="type-button" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">赌博
+                    		<span class="caret"></span>
+                    	</button>
+                    	<ul class="dropdown-menu" role="menu">
+                    		<li><a onclick="option_select('Gamble');">赌博</a></li>
+                    		<li><a onclick="option_select('Porno');">色情</a></li>
+                    		<li><a onclick="option_select('all');">全部</a></li>
+                    		<li class="divider"></li>
+                    	</ul>
+
+                    </div>
                         <center>
                         <table id="ip-netsector-table" class="table table-striped table-bordered" align="center" style="width:80%; margin-top:30px;">
                             <thead align="center">
@@ -394,6 +438,7 @@
                         </table>
                         </center>
                     </div>
+
                 </div>
 
 
@@ -415,45 +460,7 @@
         </div><!-- ./wrapper -->
 
 
-        <!-- jQuery 2.0.2 -->
-       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-       <script src="{{static_url("js/jquery.min.js")}}"></script>
 
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
-       <!-- Bootstrap -->
-       <script src="{{static_url("js/bootstrap.min.js")}}"></script>
-       <!-- daterangepicker -->
-       <script src="{{static_url("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
-
-       <script src="{{static_url("js/plugins/chart.js")}}"></script>
-
-       <script src="{{static_url("js/plugins/iCheck/icheck.min.js")}}"></script>
-       <!-- calendar -->
-       <script src="{{static_url("js/plugins/fullcalendar/fullcalendar.js")}}"></script>
-
-       <!-- Director App -->
-       <script src="{{static_url("js/Director/app.js")}}"></script>
-
-       <!-- Director dashboard demo (This is only for demo purposes) -->
-       <script src="{{static_url("js/Director/dashboard.js")}}"></script>
-
-       <!-- jQuery 2.0.2 -->
-       <script src="{{static_url("js/echarts.js")}}"></script>
-
-
-      <!-- DataTables CSS -->
-       <link rel="stylesheet" type="text/css" href="{{static_url("media/css/jquery.dataTables.css")}}">
-
-       <!-- jQuery -->
-       <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.js")}}"></script>
-
-       <!-- DataTables -->
-       <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.dataTables.js")}}"></script>
-
-
-      <!-- My JS -->
-   <script src="{{static_url("js/ip_net_sector.js")}}"></script>
 
 
        <!-- MyJS 2.0.2 -->
