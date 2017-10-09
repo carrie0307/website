@@ -164,3 +164,7 @@
 #purple .slider-selection {
     background: #932ab6;
 }
+
+.directory-item{
+    font:italic bold 12px/20px arial,sans-serif;
+}
