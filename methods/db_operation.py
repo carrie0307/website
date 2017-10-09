@@ -161,7 +161,10 @@ def live_period(domain):
             # ip_period[ip]['period'] = 1.99 # 则置为访问间隔1.99, 表示不满2小时
             # return_data['rows'].append(ip_period[ip])
             continue
-        period = ((datetime.datetime.strptime(ip_period[ip]['end'], "%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(ip_period[ip]['begin'], "%Y-%m-%d %H:%M:%S")).seconds) / 3600 # 以小时为单位
+        # delta.days * 24 + delta.seconds / 3600
+        delta_days = (datetime.datetime.strptime(ip_period[ip]['end'], "%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(ip_period[ip]['begin'], "%Y-%m-%d %H:%M:%S")).days
+        delta_seconds = (datetime.datetime.strptime(ip_period[ip]['end'], "%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(ip_period[ip]['begin'], "%Y-%m-%d %H:%M:%S")).seconds
+        period = delta_days * 24 + delta_seconds / 3600 # 以小时为单位
         ip_period[ip]['period'] = round(period, 2) # 保留两位小数
         return_data['rows'].append(ip_period[ip])
     return_data['rows'] = sorted(return_data['rows'], key=operator.itemgetter('period'), reverse = True)
