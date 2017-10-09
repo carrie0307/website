@@ -1,4 +1,6 @@
+var option_select;
 $(document).ready(function(){
+
 
     //表格相关处理
     function data_deal(data1, domain_type)
@@ -56,6 +58,17 @@ $(document).ready(function(){
                 cell.innerHTML = i + 1;
             });
         }).draw();
+    }
+
+    //选项框内容发生变化时，表根内容同样变化
+    option_select=function(param){
+
+        $('#type-button').text = param;
+        var type_dict = {"Gamble":"赌博", "Porno":"色情", "all":"全部"}
+        document.getElementById("type-button").innerHTML=type_dict[param];
+
+        data_deal(response_data,param)
+
     }
 
 
@@ -151,11 +164,6 @@ $(document).ready(function(){
     option.series[1].data=response_data['bar-data']['Porno'];
     myChart.setOption(option);
     */
-
-   //选项框内容发生变化时，表根内容同样变化
-    $('#bili').change(function(){
-    domain_type = $("#bili").find("option:selected").val();
-        data_deal(response_data,domain_type);    //当选项变化时，重新填充表格数据
-    });
-
 });
+
+option_select();

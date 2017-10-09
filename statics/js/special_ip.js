@@ -1,3 +1,5 @@
+var option_select;
+
 $(document).ready(function(){
 
     function data_deal(data1, domain_type)
@@ -101,29 +103,27 @@ $(document).ready(function(){
    });
 
 
+   option_select=function(param){
 
-    $('#bili').change(function(){
-    domain_type = $("#bili").find("option:selected").val();
-    if(domain_type == "geo"){
-        // 修改表头内容
-        document.getElementById("special_item").innerHTML = "地理位置异常";
+        $('#type-button').text = param;
+        var type_dict = {"Gamble":"赌博", "Porno":"色情", "all":"全部", "geo":"地理位置解析异常"}
+        document.getElementById("type-button").innerHTML=type_dict[param];
+        $.ajax({
+           type:"post",
+           url:"/special_ip",
+           data:{'domain_type':param},
+           cache:false,
+           success:function(data1){
+               data_deal(data1,domain_type);
+           },
+           error:function(){
+               alert("error!");
+           },
+       });
+
+
+
     }
 
-    $.ajax({
-       type:"post",
-       url:"/special_ip",
-       data:{'domain_type':domain_type},
-       cache:false,
-       success:function(data1){
-           data_deal(data1,domain_type);
-       },
-       error:function(){
-           alert("error!");
-       },
-   });
-
-
-    });
-
-
 });
+option_select();

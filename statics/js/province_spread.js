@@ -1,3 +1,5 @@
+var option_select;
+
 $(document).ready(function(){
 
     function data_deal(data1, domain_type)
@@ -110,11 +112,6 @@ $(document).ready(function(){
     var myChart = echarts.init(document.getElementById('province-map'));//柱状图初始化
     myChart.setOption(option);
 
-
-
-
-
-
     //表格内初始显示赌博类域名数据
     var domain_type="Gamble"; //默认显示赌博类域名数据
     var response_data; // 获取到的全部数据
@@ -135,21 +132,18 @@ $(document).ready(function(){
      },
     });
 
+    //选项框内容发生变化时，表根内容同样变化
+    option_select=function(param){
 
+        $('#type-button').text = param;
+        var type_dict = {"Gamble":"赌博", "Porno":"色情", "all":"全部"}
+        document.getElementById("type-button").innerHTML=type_dict[param];
 
-
-   //选项框内容发生变化时，表根内容同样变化
-    $('#bili').change(function(){
-    domain_type = $("#bili").find("option:selected").val();
-
-        option.series[0].data=response_data[domain_type]["Home"];
-
+        option.series[0].data=response_data[param]["Home"];
         myChart.setOption(option);
-
-        data_deal(response_data,domain_type);    //当选项变化时，重新填充表格数据
-
-    });
-
-
+        data_deal(response_data,param);    //当选项变化时，重新填充表格数据
+    }
 
 });
+
+option_select();

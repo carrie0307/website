@@ -4,7 +4,6 @@ function option_select(param){
 }
 */
 var option_select;
-var test;
 
 
 $(document).ready(function(){
@@ -161,4 +160,3 @@ $(document).ready(function(){
 });
 
 option_select();
-test();

@@ -1,3 +1,4 @@
+var option_select;
 $(document).ready(function(){
 
     function data_deal(data1, domain_type)
@@ -8,7 +9,7 @@ $(document).ready(function(){
             destroy: true,
             searching: false,
             //每页显示n条数据
-            pageLength: 10,
+            pageLength: 20,
             //data: dataSet,
             data:dataSet,
             // temp_dict = {'domain': item['domain'], 'opers':{}, 'geos':{}, 'sectors':0, 'ips':[]}
@@ -120,14 +121,13 @@ $(document).ready(function(){
        },
    });
 
+   option_select=function(param){
 
-    var domain_type;
-
-    $('#bili').change(function(){
-
-    domain_type = $("#bili").find("option:selected").val();
-    data_deal(response_data,domain_type);
-
-    });
+        $('#type-button').text = param;
+        var type_dict = {"Gamble":"赌博", "Porno":"色情", "all":"全部"}
+        document.getElementById("type-button").innerHTML=type_dict[param];
+        data_deal(response_data,param);
+    }
 
 });
+option_select();
