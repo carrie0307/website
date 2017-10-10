@@ -13,8 +13,6 @@
 
     <link href="{{static_url("css/style.css")}}" rel="stylesheet" type="text/css" />
 
-    <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
-
     <style type="text/css"></style>
 
       </head>
@@ -149,7 +147,7 @@
 
                                 <li class="dropdown">
                                        <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
-                                           地理位置地图统计 <b class="caret"></b>
+                                           地理位置统计 <b class="caret"></b>
                                        </a>
                                    <ul class="dropdown-menu">
                                         <li>
@@ -160,6 +158,20 @@
                                        <li class="divider"></li>
                                    </ul>
                                </li>
+
+                               <li class="dropdown">
+                                     <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
+                                          运营商统计 <b class="caret"></b>
+                                     </a>
+                                 <ul class="dropdown-menu">
+                                       <li>
+                                           <a href="domain_oper">
+                                               <span><font size="3" color="black">域名运营商数量统计</font></span>
+                                           </a>
+                                       </li>
+                                     <li class="divider"></li>
+                                 </ul>
+                             </li>
                             </ul>
 
                         </section>
@@ -183,11 +195,12 @@
                     </div>
 
 
-                <center>
-                    <div id="province-map" style="width:1000px;height:800px;"></div>
-                </center>
+                <!--Main content-->
+                <div id="ip-spread-pie" style="margin-left:30px; margin-top:30px; width:300px; height: 350px;float:left;" ></div>
+                <div id="province-map" style="width:1000px;height:800px;"></div>
 
-                <div class="panel panel-info" style="margin-left:40px;width:1400px">
+
+                <div class="panel panel-info" style="margin-left:200px;width:1400px">
                     <div class="panel-heading">
                         <h3 class="panel-title">海外ip统计</h3>
                     </div>
@@ -229,18 +242,13 @@
 
 
         <!-- jQuery 2.0.2 -->
-       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
-
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
        <!-- daterangepicker -->
        <script src="{{static_url("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
 
        <script src="{{static_url("js/plugins/chart.js")}}"></script>
-
        <!-- jQuery 2.0.2 -->
        <script src="{{static_url("js/echarts.js")}}"></script>
         <script src="{{static_url("js/china.js")}}"></script>

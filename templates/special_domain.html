@@ -13,8 +13,6 @@
 
     <link href="{{static_url("css/style.css")}}" rel="stylesheet" type="text/css" />
 
-    <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
-
     <style type="text/css"></style>
 </head>
       <body class="skin-black">
@@ -150,7 +148,7 @@
 
                                   <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
-                                              地理位置地图统计 <b class="caret"></b>
+                                              地理位置统计 <b class="caret"></b>
                                           </a>
                                       <ul class="dropdown-menu">
                                           <li>
@@ -161,6 +159,20 @@
                                           <li class="divider"></li>
                                       </ul>
                                   </li>
+
+                                  <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
+                                             运营商统计 <b class="caret"></b>
+                                        </a>
+                                    <ul class="dropdown-menu">
+                                          <li>
+                                              <a href="domain_oper">
+                                                  <span><font size="3" color="black">域名运营商数量统计</font></span>
+                                              </a>
+                                          </li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </li>
                               </ul>
 
                           </section>
@@ -173,7 +185,7 @@
                 <!-- Main content -->
                 <div class="panel panel-info" style="margin-left:40px;width:1400px">
                     <div class="panel-heading">
-                        <h3 class="panel-title">各网段ip统计</h3>
+                        <h3 class="panel-title">特殊域名统计</h3>
                     </div>
                     <div class="panel-body">
                     <div class="btn-group">
@@ -230,9 +242,6 @@
         <!-- jQuery 2.0.2 -->
        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
-
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
        <!-- daterangepicker -->
@@ -241,18 +250,12 @@
        <script src="{{static_url("js/plugins/chart.js")}}"></script>
        <!-- jQuery 2.0.2 -->
        <script src="{{static_url("js/echarts.js")}}"></script>
-
-
       <!-- DataTables CSS -->
        <link rel="stylesheet" type="text/css" href="{{static_url("media/css/jquery.dataTables.css")}}">
-
        <!-- jQuery -->
        <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.js")}}"></script>
-
        <!-- DataTables -->
        <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.dataTables.js")}}"></script>
-
-
       <!-- My JS -->
       <script type="text/javascript" charset="utf8" src="{{static_url("js/special_domain.js")}}"></script>
 

@@ -13,8 +13,6 @@
     <!-- Theme style -->
     <link href="{{static_url("css/style.css")}}" rel="stylesheet" type="text/css" />
 
-    <link href="{{static_url("css/bootstrap-table.css")}}" rel="stylesheet" type="text/css" />
-
     <style type="text/css"></style>
 
     </head>
@@ -149,7 +147,7 @@
 
                                   <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
-                                              地理位置地图统计 <b class="caret"></b>
+                                              地理位置统计 <b class="caret"></b>
                                           </a>
                                       <ul class="dropdown-menu">
                                           <li>
@@ -160,6 +158,20 @@
                                           <li class="divider"></li>
                                       </ul>
                                   </li>
+
+                                  <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
+                                             运营商统计 <b class="caret"></b>
+                                        </a>
+                                    <ul class="dropdown-menu">
+                                          <li>
+                                              <a href="domain_oper">
+                                                  <span><font size="3" color="black">域名运营商数量统计</font></span>
+                                              </a>
+                                          </li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </li>
                               </ul>
 
                           </section>
@@ -228,11 +240,8 @@
 
 
         <!-- jQuery 2.0.2 -->
-       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
 
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
        <!-- daterangepicker -->

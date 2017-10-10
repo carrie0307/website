@@ -10,7 +10,6 @@
     <link href="{{static_url("css/bootstrap.min.css")}}" rel="stylesheet" type="text/css" />
     <!-- font Awesome -->
     <link href="{{static_url("css/font-awesome.min.css")}}" rel="stylesheet" type="text/css" />
-
     <!-- Theme style -->
     <link href="{{static_url("css/style.css")}}" rel="stylesheet" type="text/css" />
 
@@ -152,7 +151,7 @@
 
                                   <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
-                                              地理位置地图统计 <b class="caret"></b>
+                                              地理位置统计 <b class="caret"></b>
                                           </a>
                                       <ul class="dropdown-menu">
                                           <li>
@@ -163,6 +162,20 @@
                                           <li class="divider"></li>
                                       </ul>
                                   </li>
+
+                                  <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
+                                             运营商统计 <b class="caret"></b>
+                                        </a>
+                                    <ul class="dropdown-menu">
+                                          <li>
+                                              <a href="domain_oper">
+                                                  <span><font size="3" color="black">域名运营商数量统计</font></span>
+                                              </a>
+                                          </li>
+                                        <li class="divider"></li>
+                                    </ul>
+                                </li>
                               </ul>
 
                           </section>
@@ -217,8 +230,6 @@
        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
 
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
        <!-- daterangepicker -->
@@ -226,19 +237,8 @@
 
        <script src="{{static_url("js/plugins/chart.js")}}"></script>
 
-       <script src="{{static_url("js/plugins/iCheck/icheck.min.js")}}"></script>
-       <!-- calendar -->
-       <script src="{{static_url("js/plugins/fullcalendar/fullcalendar.js")}}"></script>
-
-       <!-- Director App -->
-       <script src="{{static_url("js/Director/app.js")}}"></script>
-
-       <!-- Director dashboard demo (This is only for demo purposes) -->
-       <script src="{{static_url("js/Director/dashboard.js")}}"></script>
-
        <!-- jQuery 2.0.2 -->
        <script src="{{static_url("js/echarts.js")}}"></script>
-
 
       <!-- DataTables CSS -->
        <link rel="stylesheet" type="text/css" href="{{static_url("media/css/jquery.dataTables.css")}}">
@@ -248,7 +248,6 @@
 
        <!-- DataTables -->
        <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.dataTables.js")}}"></script>
-
 
       <!-- My JS -->
    <script src="{{static_url("js/ip_period.js")}}"></script>

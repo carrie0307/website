@@ -20,8 +20,6 @@
 
       </head>
       <body class="skin-black">
-        <!-- header logo: style can be found in header.less -->
-        <body class="skin-black">
           <!-- header logo: style can be found in header.less -->
           <header class="header">
               <a href="/" class="logo">
@@ -157,12 +155,26 @@
                       				<ul class="dropdown-menu">
                                           <li>
                                               <a href="province_spread">
-                                                  <span><font size="3" color="black">地理位置地图统计</font></span>
+                                                  <span><font size="3" color="black">地理位置统计</font></span>
                                               </a>
                                           </li>
                       					<li class="divider"></li>
                       				</ul>
                       			</li>
+
+                                <li class="dropdown">
+                                      <a href="#" class="dropdown-toggle" class="fa fa-glass" data-toggle="dropdown">
+                                           运营商统计 <b class="caret"></b>
+                                      </a>
+                                  <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="domain_oper">
+                                                <span><font size="3" color="black">域名运营商数量统计</font></span>
+                                            </a>
+                                        </li>
+                                      <li class="divider"></li>
+                                  </ul>
+                              </li>
                               </ul>
 
                           </section>
@@ -227,31 +239,22 @@
 
         </div><!-- ./wrapper -->
         <!-- jQuery 2.0.2 -->
-       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
        <script src="{{static_url("js/jquery.min.js")}}"></script>
-
-       <!-- jQuery UI 1.10.3 -->
-       <script src="{{static_url("js/jquery-ui-1.10.3.min.js")}}"></script>
        <!-- Bootstrap -->
        <script src="{{static_url("js/bootstrap.min.js")}}"></script>
        <!-- daterangepicker -->
        <script src="{{static_url("js/plugins/daterangepicker/daterangepicker.js")}}"></script>
 
        <script src="{{static_url("js/plugins/chart.js")}}"></script>
-
        <!-- jQuery 2.0.2 -->
        <script src="{{static_url("js/echarts.js")}}"></script>
 
-
       <!-- DataTables CSS -->
        <link rel="stylesheet" type="text/css" href="{{static_url("media/css/jquery.dataTables.css")}}">
-
        <!-- jQuery -->
        <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.js")}}"></script>
-
        <!-- DataTables -->
        <script type="text/javascript" charset="utf8" src="{{static_url("media/js/jquery.dataTables.js")}}"></script>
-
       <!-- My JS -->
       <script type="text/javascript" charset="utf8" src="{{static_url("js/domain_ipsector.js")}}"></script>
 

@@ -1,25 +1,35 @@
 # ip图标分析统计
 
 ----
-```
-此文档主要对当前已进行的分析进行整理，并列举出分析点以及后续要进行的部分。
+## 总体类型
+* ip 变化情况相关统计
 
-说明：对该模块分析内容的说明
-备注：某个模块要添加完善的地方
-分析点&结论：某个模块需要具体分析或可以得到的结论
+* ip/域名数量关系统计
+
+* 网段相关统计
+
+* 特殊ip/域名统计
+
+* 地理位置统计
+
+* 运营商统计
+
+![](http://ouzh4pejg.bkt.clouddn.com/ip-directory-2.png)
+```
+此文档主要对当前已进行的分析进行整理，并列举出相关的分析点等
 
 ```
 ---
 
 ## Ⅰ 首页-所有域名ip变化频率的统计
-![](http://ouzh4pejg.bkt.clouddn.com/index.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-index.png)
 **图1-1**
 
 #### 说明
 此页面通过柱状图的两种颜色展示域名**ip变动次数**与**访问次数**之间的关系，同时用表格展示了具体的数值。**但实际逐个域名查看难以发现什么，因此这个统计页面基本搁置，只当作了学习前端练手的页面**。
 
 ## Ⅱ  域名ip变化连续性统计（散点图)
-![](http://ouzh4pejg.bkt.clouddn.com/ip-scatter.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-scatter-2.png)
 **图2-1**
 
 #### 说明
@@ -30,11 +40,8 @@
 #### 分析点
 可以分析查看某个域名ip服务情况的**连续性**，以及**某个时段内服务ip有哪些**。
 
-#### 备注
-这里需要加上对当前域名的显示
-
 ## Ⅲ 域名ip具体变化分析
-![](http://ouzh4pejg.bkt.clouddn.com/ip-change-situation.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-change-situation-2.png)
 **图3-1**
 
 #### 说明
@@ -47,12 +54,8 @@
 
 2. 查看每次域名ip变化的具体情况，尤其是新增的ip有哪些，以及新增ip的地理位置分布。
 
-
-#### 备注
-这里需要加上对当前域名的显示
-
 ## Ⅳ  域名ip服务时长统计
-![](http://ouzh4pejg.bkt.clouddn.com/live-period.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-live-period.png)
 **图4-1**
 
 #### 说明
@@ -63,11 +66,8 @@
 #### 分析点
 分析某个ip为域名提供连续性服务时长的特点。
 
-#### 备注
-这里需要加上对当前域名的显示
-
 ## Ⅴ 域名拥有ip数量及占比统计
-![](http://ouzh4pejg.bkt.clouddn.com/ip-percent.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-percent-2.png)
 **图5-1**
 #### 说明
 1. 如图，此模块通过**双柱状图**分别展示**赌博、色情类域名拥有ip的数量**；
@@ -80,7 +80,7 @@
 2. 由于每个域名拥有ip数量较少，因此后续对单个域名的**网段分布**等的分析，都有一定的影响；
 
 ## Ⅵ 域名整体的网段分布统计
-![](http://ouzh4pejg.bkt.clouddn.com/ip-sector.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-net-sector-2.png)
 **图6-1**
 
 ![](http://ouzh4pejg.bkt.clouddn.com/Prono.png)
@@ -100,7 +100,7 @@
 
 ## Ⅶ 域名网段数量统计
 
-![](http://ouzh4pejg.bkt.clouddn.com/domain-ip-sector.png)
+![](http://ouzh4pejg.bkt.clouddn.com/domain-ip-sector-2.png)
 **图7-1**
 
 #### 说明
@@ -111,12 +111,9 @@
 #### 分析点
 可以查看一个域名ip的**独立程度**，也可以说是互相之间的影响，即**如果一个ip对应服务器宕机，其他ip会不会同时受到影响，能否继续为该域名提供服务**。
 
-#### 备注
-这里考虑将地理位置统计也加入，分析不同网段的ip是否在一个地理位置。
-
 ## Ⅷ  ip服务域名数量统计
 
-![](http://ouzh4pejg.bkt.clouddn.com/ip-domain-num.png)
+![](http://ouzh4pejg.bkt.clouddn.com/ip-domain-num-2.png)
 **图8-1**
 
 #### 说明
@@ -126,7 +123,7 @@
 此模块的分析，主要设想是统计出一些**ip黑名单（为大量非法域名提供服务的IP）**，尤其再和网段的统计结合，整理可疑的ip。
 
 #### Ⅸ 特殊ip统计
-![](http://ouzh4pejg.bkt.clouddn.com/special-ip.png)
+![](http://ouzh4pejg.bkt.clouddn.com/special-ip-2.png)
 **图9-1**
 
 #### 说明
@@ -135,20 +132,46 @@
 #### 分析点
 这个分析主要是整理一些异常ip所服务的域名
 
+#### Ⅹ 特殊域名统计
+![](http://ouzh4pejg.bkt.clouddn.com/special-domain-2.png)
+**图10-1**
+
+#### 说明
+这是将域名ip运营商、地理位置和网段关联起来进行的分析，可以从表中查看某一个域名，其ip数量的多少、网段的分布以及地理位置的多少
+
+#### 分析点
+这里可以了解一个域名的“分散性",由于运营商、地理位置和网段分别都是根据ip统计的，因此可以通过这里查看域名ip之间的“远近关系”
+
+## ⅩⅠ地理位置统计
+![](http://ouzh4pejg.bkt.clouddn.com/ip-china.png)
+**图11-1 IP在全国各地分布及国内外分布比例**
+
+![](http://ouzh4pejg.bkt.clouddn.com/ip-abroad.png)
+**图11-2 IP在海外分布统计表**
+
+#### 说明
+1. 图11-1首先通过饼图统计了ip在内地、港台和海外的分布比例；
+
+2. 图11-1中国地图展示了非法域名ip在全国各省的分布；
+
+3. 图11-2通过列表展示了海外的ip数量统计
+
+4. 通过页面上方选择框，可以选择查看赌博或色情域名ip的分布情况
+
+## ⅩⅠⅡ运营商统计
+![](http://ouzh4pejg.bkt.clouddn.com/domain-oper.png)
+**图12-1**
+
+#### 说明
+这里单独对域名的运营商进行了统计，包括有：
+1. 非法域名运营商数量的比例统计
+
+2. 通过悬浮可以某个域名查看具体的运营商（多个）和具体的ip
+
+3. 可以通过选项栏选择查看赌博或色情类域名的统计情况
+
+4. 比例统计显示，近70%的ip分布在海外
 ---
-**以下内容为计划完成内容**
+**问题**
 
-## Ⅹ 地理位置统计
-
-## 运营商统计
-
-## 运行商、地理位置、网段关联的统计
-
-## 备注
-
-1. 整个页面美化的问题。由于大多页面的美化是一致的，因此想待整体分析结束后，统一进行美化处理；
-
-2. 数据加载速度的处理
-
----
-2017.09.21
+2017.10.10

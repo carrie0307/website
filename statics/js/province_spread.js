@@ -108,9 +108,38 @@ $(document).ready(function(){
         ]
     };
 
-
     var myChart = echarts.init(document.getElementById('province-map'));//柱状图初始化
     myChart.setOption(option);
+
+
+    var option_pie = {
+    title : {
+        text: 'ip海内外分布比例',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient : 'vertical',
+        x : 'left',
+        data:['内地ip','海外ip','港台ip']
+    },
+    calculable : true,
+    series : [
+        {
+            name:'访问来源',
+            type:'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[]
+        }
+            ]
+    };
+    var myChart_pie = echarts.init(document.getElementById('ip-spread-pie'));//柱状图初始化
+    myChart_pie.setOption(option_pie);
+
 
     //表格内初始显示赌博类域名数据
     var domain_type="Gamble"; //默认显示赌博类域名数据
@@ -124,6 +153,9 @@ $(document).ready(function(){
 
         option.series[0].data=data1[domain_type]["Home"];
         myChart.setOption(option);
+
+        option_pie.series[0].data=data1[domain_type]["pie-chart"];
+        myChart_pie.setOption(option_pie);
 
         data_deal(data1, domain_type);
      },
@@ -141,6 +173,10 @@ $(document).ready(function(){
 
         option.series[0].data=response_data[param]["Home"];
         myChart.setOption(option);
+
+        option_pie.series[0].data=response_data[param]["pie-chart"];
+        myChart_pie.setOption(option_pie);
+
         data_deal(response_data,param);    //当选项变化时，重新填充表格数据
     }
 

@@ -598,10 +598,13 @@ class JSONEncoder(json.JSONEncoder):
 # www.aitingwang.com 中国，但其他省市未解析出来
 def province_count():
     return_data = {}
-    return_data['Gamble'] = {'Home':[], 'Broad':{}}
-    return_data['Porno'] = {'Home':[], 'Broad':{}}
+    return_data['Gamble'] = {'Home':[], 'Broad':{}, 'pie-chart':[]}
+    return_data['Porno'] = {'Home':[], 'Broad':{}, 'pie-chart':[]}
     global collection
     for dm_type in ['Gamble', 'Porno']:
+        home_num = 0
+        HT_num = 0
+        broad_num = 0
         res = collection.find({'dm_type':dm_type})
         region_domain = {'天津': [{'name':'天津','value':0},[]], '上海': [{'name':'上海','value':0},[]], '重庆': [{'name':'重庆','value':0}, []], '北京': [{'name':'北京','value':0}, []],
                     '河北': [{'name':'河北','value':0}, []], '河南': [{'name':'河南','value':0}, []], '云南': [{'name':'云南','value':0}, []], '辽宁':[{'name':'辽宁','value':0}, []],
@@ -620,11 +623,13 @@ def province_count():
                     if country == '中国':
                         region = str(each_visit['geos'][index]['region'][:2]) # 不包括“省”字 黑龙江--黑龙, 内蒙 --内蒙
                         if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            home_num += 1 # 统计内地ip总数
                             region_domain[region][1].append(ip)
                             region_domain[region][0]['value'] += 1
                     elif country == '香港' or country == '澳门' or country == '台湾':
                         region = str(country)
                         if ip not in region_domain[region][1]: # 这个ip没有重复统计
+                            HT_num += 1 # 统计港台ip总数
                             region_domain[region][1].append(ip)
                             region_domain[region][0]['value'] += 1
                     else: # 海外域名
@@ -632,15 +637,16 @@ def province_count():
                             broad_domain[country] = {'country':country, 'ips':[ip]}
                         else:
                             if ip not in broad_domain[country]['ips']:
+                                broad_num += 1 # 统计海外ip总数
                                 broad_domain[country]['ips'].append(ip)
         return_data[dm_type]['Home'] = [region_domain[item][0] for item in region_domain.keys()]
         return_data[dm_type]['Broad'] = broad_domain.values()
         return_data[dm_type]['Broad'] = sorted(return_data[dm_type]['Broad'], key=lambda para: len(para['ips']), reverse = True)
+        return_data[dm_type]['pie-chart'] = [{"value":home_num, "name":'内地ip'},{"value":broad_num, "name":'海外ip'},{"value":HT_num, "name":'港台ip'}]
     return return_data
 
 
-# 单个域名ip所属地理位置-  表格展示
-# 域名地理位置数量统计 -- 赌博色情双柱状图
+
 def domain_geo_num():
     global collection
     return_data = {}
